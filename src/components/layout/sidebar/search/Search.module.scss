@@ -1,0 +1,18 @@
+.search {
+  @apply relative;
+
+  > input {
+    @apply bg-[#EFF3F4] rounded-full w-full p-2.5 focus:outline-blue-d pl-14;
+    // @apply bg-[#EFF3F4] rounded-full w-full p-2 focus:outline-blue-d;
+    &::placeholder {
+      @apply text-gray-second;
+    }
+    &:focus + .icon {
+      @apply text-blue-d;
+    }
+  }
+
+  > .icon {
+    @apply absolute top-1/2 -translate-y-1/2 left-5 text-2xl text-gray-second;
+  }
+}

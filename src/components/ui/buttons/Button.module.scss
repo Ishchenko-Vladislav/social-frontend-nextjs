@@ -1,0 +1,59 @@
+.but {
+  @apply relative;
+  //   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  //   background-color: rgb(107, 38, 217);
+  //   border: 0px;
+  //   border-radius: 50px;
+  //   box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+  //   box-sizing: border-box;
+  //   color: #fff;
+  //   cursor: pointer;
+  //   font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif,
+  //     "Apple Color Emoji", "Segoe UI Emoji";
+  //   font-size: 20px;
+  //   font-weight: 600;
+  //   line-height: 20px;
+  //   padding: 18px;
+  //   width: 200px;
+  //   position: relative;
+  //   text-align: center;
+  //   overflow: hidden;
+  //   transition: all 0.25s ease;
+  @apply w-full h-full;
+
+  &:disabled {
+    .nested {
+      @apply hidden;
+    }
+    .loading {
+      @apply flex opacity-100;
+    }
+  }
+  .loading {
+    @apply absolute bottom-0 right-0  justify-center items-center w-full h-full  hidden opacity-0;
+    // background: rgba(107, 38, 217, 1);
+    .dot {
+      @apply w-2 h-2 bg-white rounded-full absolute;
+    }
+    &:nth-child(1) {
+      animation: loading4 0.7s ease infinite;
+    }
+    &:nth-child(2) {
+      animation: loading4 0.7s ease infinite 0.5s;
+    }
+    &:nth-child(3) {
+      animation: loading4 0.7s ease infinite 1s;
+    }
+  }
+}
+@keyframes loading4 {
+  0% {
+    transform: translate(-40px) scale(0);
+  }
+  50% {
+    transform: translate(0px) scale(1);
+  }
+  100% {
+    transform: translate(40px) scale(0);
+  }
+}

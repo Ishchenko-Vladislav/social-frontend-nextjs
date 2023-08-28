@@ -1,0 +1,22 @@
+.form {
+  @apply flex flex-col gap-6 w-full;
+  > .error {
+    @apply self-start text-xs text-red-500;
+  }
+  > button {
+    @apply w-full h-16 bg-primary rounded-full text-white transition-all relative;
+    &:hover {
+      @apply bg-[#1e364b];
+    }
+    &:disabled {
+      @apply hover:bg-primary;
+    }
+  }
+  // > button {
+  //   @apply relative border rounded-full w-full h-16 transition-all bg-primary text-white flex justify-center items-center;
+
+  //   &:hover {
+  //     @apply bg-[#1e364b];
+  //   }
+  // }
+}
