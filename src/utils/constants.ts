@@ -39,6 +39,7 @@ export const AUTH_ROUTE = {
   register: "/auth/register",
   logout: "/auth/logout",
   refresh: "/auth/v1/secret/refresh",
+  status: "/auth/status",
 };
 
 export const USER_ROUTE = {

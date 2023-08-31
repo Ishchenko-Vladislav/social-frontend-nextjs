@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { Path, useForm, UseFormRegister, SubmitHandler, RegisterOptions } from "react-hook-form";
+import { Path, UseFormRegister, RegisterOptions } from "react-hook-form";
 import styles from "./FormInput.module.scss";
-interface Props {}
+
 interface IError {
   type: string;
   message: string;
@@ -17,12 +17,7 @@ export const FormInput: FC<InputProps> = ({ errors, label, options, name, regist
   return (
     <>
       <div className={styles.input}>
-        <input
-          placeholder=""
-          type="text"
-          {...register(name, options)}
-          // autoComplete={`nope-${name}`}
-        />
+        <input placeholder="" type="text" {...register(name, options)} />
         <label htmlFor="">{label}</label>
         {errors[name] && <p>{errors[name].message}</p>}
       </div>

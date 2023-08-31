@@ -1,0 +1,47 @@
+.customize {
+  @apply bg-popover border border-border fixed top-1/3 left-1/3 rounded-sm;
+
+  .active {
+    @apply border-[--theme-primary];
+  }
+
+  .header {
+    @apply flex items-center gap-3 mb-5 py-3 px-2;
+    .name {
+      @apply flex items-center gap-3 w-full cursor-move;
+    }
+    .close {
+      @apply ml-auto p-1.5 rounded-full transition-colors border border-transparent;
+      &:hover {
+        @apply border-primary;
+      }
+    }
+  }
+  .color {
+    @apply px-2;
+    > span {
+      @apply text-sm;
+    }
+    .colors {
+      @apply grid grid-cols-3 gap-3;
+    }
+  }
+  .modeBlock {
+    @apply px-2 py-4;
+    > span {
+      @apply text-sm;
+    }
+    .modes {
+      @apply flex gap-4 mt-3;
+      .mode {
+        @apply border-2 rounded-[6px] border-border flex items-center justify-evenly gap-2 px-2 py-1;
+        &:hover {
+          @apply bg-accent;
+        }
+      }
+      .active {
+        @apply border-foreground;
+      }
+    }
+  }
+}

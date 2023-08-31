@@ -1,5 +1,6 @@
-import { AuthService, ILoginFields, IRegisterFields } from "@/services/auth/auth.service";
-import { useMutation } from "@tanstack/react-query";
+import { ILoginFields, IRegisterFields } from "@/services/auth/auth.interface";
+import { AuthService } from "@/services/auth/auth.service";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
@@ -48,10 +49,31 @@ export const useRegister = () => {
     },
     onSuccess: (data, variables, context) => {
       AuthService.setTokensToCookie(data);
+
       push("/");
     },
     onError(error: AxiosError<IAxiosErrorData, any>, variables, context) {
       return error;
+    },
+  });
+};
+
+export const useAuth = () => {
+  const { replace } = useRouter();
+  return useQuery({
+    queryKey: ["status"],
+    queryFn: () => AuthService.getStatus(),
+    onError(err: AxiosError) {
+      if (err.response?.status === 401) {
+        AuthService.logout();
+        replace("/login");
+      }
+    },
+    retry: (failureCount, error) => {
+      if (error.response?.status === 401) {
+        return false;
+      }
+      return true;
     },
   });
 };

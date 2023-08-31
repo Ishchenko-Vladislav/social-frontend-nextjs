@@ -1,0 +1,47 @@
+.user {
+  @apply max-w-[240px] overflow-hidden mt-auto p-2 xl:px-4 w-full rounded-full hover:bg-accent
+  cursor-pointer items-center gap-2 justify-center xl:justify-start hidden mobile:flex transition-colors;
+  &:active {
+    @apply bg-accent-active;
+  }
+  .avatar {
+    @apply shrink-0 w-8 h-8 bg-muted-foreground rounded-full overflow-hidden flex justify-center items-center;
+  }
+  .names {
+    @apply hidden xl:flex flex-col text-sm overflow-hidden leading-4;
+    .displayName {
+      @apply font-semibold text-left;
+    }
+    .userName {
+      @apply text-muted-foreground truncate text-left;
+    }
+  }
+  .info {
+    @apply gap-1 ml-auto hidden xl:flex;
+    > span {
+      @apply w-1 h-1 bg-accent-foreground rounded-full;
+    }
+  }
+}
+
+.popup {
+  @apply px-0 py-2 shadow border rounded-md bg-popover relative;
+  .customizeButton {
+    @apply px-2 py-2 w-full cursor-pointer hover:bg-accent flex items-center gap-2 active:bg-accent-active;
+  }
+  .signout {
+    @apply px-2 py-2 hover:bg-accent cursor-pointer w-full flex flex-col;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid hsl(var(--popover));
+    filter: drop-shadow(hsl(var(--border)) 0px 3px 1px);
+  }
+}

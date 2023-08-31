@@ -9,7 +9,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
     <>
       <div className={styles.layout}>
         <Navigation />
-        <main className="flex-1 max-w-2xl pb-16 mobile:pb-0 border-x min-h-screen">{children}</main>
+        <main className={styles.main}>{children}</main>
         <SideBar />
       </div>
     </>

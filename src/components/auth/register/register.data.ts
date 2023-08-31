@@ -11,15 +11,8 @@ import { IField } from "../form/Form";
 
 export const registerFields: IField[] = [
   {
-    label: "FirstName",
-    name: "firstName",
-    options: {
-      required: "this field is required",
-    },
-  },
-  {
-    label: "LastName",
-    name: "lastName",
+    label: "DisplayName",
+    name: "displayName",
     options: {
       required: "this field is required",
     },

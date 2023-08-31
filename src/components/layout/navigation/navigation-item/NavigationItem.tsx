@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { IconType } from "react-icons";
-import { RiHome7Line, RiHome7Fill } from "react-icons/ri";
 import styles from "./NavigationItem.module.scss";
 import Link from "next/link";
 import cn from "classnames";
@@ -27,7 +26,7 @@ export const NavigationItem: FC<INavigationItem & { pathname: string }> = ({
           {here ? (
             <SecondIcon className={styles.iconActive} />
           ) : (
-            <FirstIcon className="text-2xl text-slate-600" />
+            <FirstIcon className={styles.iconNotActive} />
           )}
         </div>
         <div className={cn(styles.name, { [styles.here]: here })}>{title}</div>

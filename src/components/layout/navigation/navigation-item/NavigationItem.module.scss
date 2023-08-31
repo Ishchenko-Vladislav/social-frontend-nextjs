@@ -1,28 +1,25 @@
 .item {
-  @apply cursor-pointer transition-all select-none;
+  @apply cursor-pointer transition-all select-none max-w-[240px] w-full;
 
   .link {
     @apply rounded-full p-3 xl:px-5 flex gap-4 items-center w-fit xl:mx-0 mx-auto transition-all;
-    // &:active {
-    //   @apply bg-[#CFD0D1];
-    // }
   }
   .name {
-    @apply font-medium text-lg hidden xl:block leading-none;
+    @apply font-normal text-lg hidden xl:block leading-none;
   }
   .here {
     @apply font-bold;
   }
   .iconActive {
-    @apply text-2xl;
-    // > path {
-    //   @apply stroke-black;
-    // }
+    @apply text-xl;
+  }
+  .iconNotActive {
+    @apply text-xl text-slate-600;
   }
   &:hover .link {
-    @apply bg-gray-h;
+    @apply bg-accent;
   }
   &:active .link {
-    @apply bg-[#CFD0D1];
+    @apply bg-accent-active;
   }
 }

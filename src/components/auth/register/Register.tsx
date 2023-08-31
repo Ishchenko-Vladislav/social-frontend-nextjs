@@ -5,11 +5,10 @@ import Link from "next/link";
 import { Form } from "../form/Form";
 import { registerFields } from "./register.data";
 import { useRegister } from "@/hooks/useAuth";
-import { IRegisterFields } from "@/services/auth/auth.service";
+import { IRegisterFields } from "@/services/auth/auth.interface";
 interface Props {}
 
 export const Register: FC<Props> = () => {
-  // const submitAction = () => {};
   const { mutate, isLoading, error } = useRegister();
 
   return (

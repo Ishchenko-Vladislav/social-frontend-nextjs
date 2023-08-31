@@ -2,17 +2,19 @@
   @apply relative;
 
   > input {
-    @apply bg-[#EFF3F4] rounded-full w-full p-2.5 focus:outline-blue-d pl-14;
-    // @apply bg-[#EFF3F4] rounded-full w-full p-2 focus:outline-blue-d;
+    @apply bg-input rounded-full w-full p-2.5 pl-14;
     &::placeholder {
-      @apply text-gray-second;
+      @apply text-muted-foreground;
+    }
+    &:focus {
+      @apply outline-primary outline outline-2;
     }
     &:focus + .icon {
-      @apply text-blue-d;
+      @apply text-primary;
     }
   }
 
   > .icon {
-    @apply absolute top-1/2 -translate-y-1/2 left-5 text-2xl text-gray-second;
+    @apply absolute top-1/2 -translate-y-1/2 left-5 text-2xl text-muted-foreground;
   }
 }

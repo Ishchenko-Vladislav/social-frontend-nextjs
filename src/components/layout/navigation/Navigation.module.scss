@@ -1,41 +1,7 @@
-// .sidebar {
-//   @apply fixed bottom-0 mobile:top-0 h-16 w-full justify-around mobile:min-h-screen lg:max-w-xs bg-white border-t mobile:border-t-0  lg:w-full max-w-none  mobile:w-16 flex mobile:flex-col gap-2 py-2 lg:pr-1;
-//   .user {
-//     @apply mt-auto p-2 lg:px-5 w-full rounded-full hover:bg-[#E7E7E8] cursor-pointer  items-center gap-2 justify-center lg:justify-start hidden mobile:flex;
-//     .avatar {
-//       @apply w-11 h-11 bg-[#CCD6DD] rounded-full overflow-hidden flex justify-center items-center;
-//     }
-//     .names {
-//       @apply hidden lg:block;
-//     }
-//     .info {
-//       @apply gap-1 ml-auto hidden lg:flex;
-//       > span {
-//         @apply w-1 h-1 bg-black rounded-full;
-//       }
-//     }
-//   }
-// }
-
 .sidebar {
-  // @apply bottom-0 mobile:top-0 h-16 w-full justify-around mobile:min-h-screen lg:max-w-xs
-  //  bg-white border-t mobile:border-t-0  lg:w-full max-w-none  mobile:w-16 flex mobile:flex-col gap-2 py-2 lg:pr-1;
-  // @apply bg-white justify-around mobile:max-w-xs flex border-t mobile:border-none w-full mobile:flex-col gap-2 py-2 xl:pr-1 h-16 mobile:h-auto mobile:min-h-screen mobile:w-16 xl:max-w-xs xl:w-full;
-  @apply select-none pointer-events-auto px-1 xl:max-w-xs w-full justify-around xl:w-full fixed bg-white mobile:sticky bottom-0 mobile:top-0 mobile:min-h-screen  flex mobile:flex-col border-t mobile:border-none gap-2 py-2 mobile:w-16 mobile:h-auto h-16;
-  .user {
-    @apply mt-auto p-2 xl:px-5 w-full rounded-full hover:bg-gray-h cursor-pointer  items-center gap-2 justify-center xl:justify-start hidden mobile:flex;
-    // @apply mt-auto flex w-full;
-    .avatar {
-      @apply w-10 h-10 bg-[#CCD6DD] rounded-full overflow-hidden flex justify-center items-center;
-    }
-    .names {
-      @apply hidden xl:block;
-    }
-    .info {
-      @apply gap-1 ml-auto hidden xl:flex;
-      > span {
-        @apply w-1 h-1 bg-black rounded-full;
-      }
-    }
-  }
+  @apply items-end select-none pointer-events-auto px-1 xl:max-w-xs w-full 
+  justify-around xl:w-full fixed  mobile:sticky bottom-0 
+  mobile:top-0 mobile:min-h-screen  
+  flex mobile:flex-col border-t mobile:border-none gap-2 py-2 mobile:w-16 mobile:h-auto h-16;
+  z-index: 3;
 }

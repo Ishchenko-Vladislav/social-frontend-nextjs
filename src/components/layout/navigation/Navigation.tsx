@@ -4,7 +4,7 @@ import styles from "./Navigation.module.scss";
 import { NavigationItem } from "./navigation-item/NavigationItem";
 import { usePathname } from "next/navigation";
 import { navigation } from "./Navigation.data";
-import { PiUserCircleLight, PiUserLight } from "react-icons/pi";
+import { User } from "./user/User";
 interface Props {}
 
 export const Navigation: FC<Props> = () => {
@@ -14,21 +14,7 @@ export const Navigation: FC<Props> = () => {
       {navigation.map((item) => (
         <NavigationItem pathname={pathname} key={item.title} {...item} />
       ))}
-
-      <div className={styles.user}>
-        <div className={styles.avatar}>
-          <PiUserLight className="text-3xl" />
-        </div>
-        <div className={styles.names}>
-          <div className="font-semibold">Franclin Seint</div>
-          <div className="text-gray-700">@FranclinSeint</div>
-        </div>
-        <div className={styles.info}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
+      <User />
     </div>
   );
 };

@@ -4,8 +4,7 @@ export interface IUser {
   updatedAt: string;
   email: string;
   userName: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   isVerified: boolean;
   avatarPath: string | null;
 }

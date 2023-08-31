@@ -10,10 +10,6 @@
     -webkit-autofill:focus {
       transition: background-color 0s 600000s, color 0s 600000s;
     }
-    // &:autofill,
-    // &:-webkit-autofill {
-    //   // border-color: palevioletred;
-    // }
     &:autofill:focus,
     &:-webkit-autofill:focus ~ input:autofill {
       border-color: palevioletred;
@@ -27,7 +23,6 @@
       @apply text-xs -top-1/3 translate-y-1/2;
     }
   }
-
   > p {
     @apply text-xs text-red-500 absolute -bottom-2;
   }
