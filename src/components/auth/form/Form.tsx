@@ -5,6 +5,7 @@ import styles from "./Form.module.scss";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { IAxiosErrorData } from "@/hooks/useAuth";
 import { ITokens } from "@/services/auth/auth.interface";
+import { cn } from "@/shadcn/utils";
 export interface IField {
   label: string;
   name: string;
@@ -45,8 +46,8 @@ export function Form<T>({ fields, buttonTitle, isLoading, submitAction, error }:
           register={register}
         />
       ))}
-      <button disabled={isLoading} type="submit">
-        <span className={styles.title}>{buttonTitle}</span>
+      <button className={styles.button} disabled={isLoading} type="submit">
+        <span>{buttonTitle}</span>
       </button>
     </form>
   );

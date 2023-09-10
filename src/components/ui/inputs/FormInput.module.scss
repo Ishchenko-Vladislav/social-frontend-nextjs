@@ -1,11 +1,11 @@
 .input {
   @apply flex flex-col relative pb-2;
   > label {
-    @apply absolute text-gray-500 transition-all top-1/2
+    @apply absolute text-muted-foreground transition-all top-1/2
      -translate-y-1/2 select-none pointer-events-none text-sm;
   }
   > input {
-    @apply border-b border-black px-2 py-1 pt-2 outline-none autofill:bg-red-300;
+    @apply border-b border-border px-2 py-1 pt-2 outline-none autofill:bg-red-300 bg-transparent;
     &:-webkit-autofill,
     -webkit-autofill:focus {
       transition: background-color 0s 600000s, color 0s 600000s;

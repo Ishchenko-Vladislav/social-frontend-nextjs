@@ -1,0 +1,18 @@
+.navigation {
+  @apply sticky top-0 h-14
+  backdrop-blur-sm bg-background/50
+  border-b-2
+  border-border
+  w-full z-50
+  transition-all
+  duration-300
+  items-center flex p-3;
+
+  .logo {
+    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
+}
+
+.scrollable {
+  @apply -top-full;
+}

@@ -43,5 +43,10 @@ export const AUTH_ROUTE = {
 };
 
 export const USER_ROUTE = {
-  getOwnProfile: "/user/profile",
+  ownProfile: "/user/profile",
+  profile: "/user/profile",
+  search: "/user/search",
+};
+export const POST_ROUTE = {
+  followingPosts: "/post/my/following/posts",
 };

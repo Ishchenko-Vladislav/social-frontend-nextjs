@@ -1,7 +1,18 @@
 .sidebar {
-  @apply items-end select-none pointer-events-auto px-1 xl:max-w-xs w-full 
-  justify-around xl:w-full fixed  mobile:sticky bottom-0 
-  mobile:top-0 mobile:min-h-screen  
-  flex mobile:flex-col border-t mobile:border-none gap-2 py-2 mobile:w-16 mobile:h-auto h-16;
+  @apply fixed 
+  border-t select-none pointer-events-auto
+  flex justify-around items-end gap-2
+  xl:w-full xl:max-w-xs
+  py-2 h-14 px-1 w-full
+  bg-background
+  text-foreground
+  mobile:sticky bottom-0
+  mobile:top-0
+  mobile:min-h-screen
+  mobile:flex-col
+  mobile:border-none
+  mobile:w-16
+  mobile:bg-background
+  mobile:h-auto;
   z-index: 3;
 }

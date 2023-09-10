@@ -2,25 +2,31 @@
 import { FC, useState } from "react";
 import styles from "./User.module.scss";
 import { PiUserLight } from "react-icons/pi";
-import { useProfile } from "@/hooks/user/useProfile";
+import { useOwnProfile } from "@/hooks/user/useProfile";
 import { Popover, PopoverContent, PopoverTrigger, PopoverClose } from "@/shadcn/ui/popover";
-import { useTheme } from "next-themes";
 import { LuPaintbrush } from "react-icons/lu";
 import { Customize } from "./customize/Customize";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/ui/avatar";
+import { useFixed } from "@/context/FixedContext";
 
 interface Props {}
 
 export const User: FC<Props> = () => {
-  const { data, isLoading, error } = useProfile();
+  const { data, isLoading, error } = useOwnProfile();
   const [isOpen, setIsOpen] = useState(false);
-  const { setTheme, theme } = useTheme();
+  const { setOpenCustomize } = useFixed();
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <button className={styles.user}>
-          <div className={styles.avatar}>
-            <PiUserLight className="text-2xl" />
-          </div>
+          <Avatar className="w-8 h-8 shrink-0 border-0">
+            <AvatarImage src={data?.avatarPath || ""} />
+            <AvatarFallback className="dark:bg-muted-foreground bg-muted-foreground">
+              <PiUserLight className="text-2xl" />
+            </AvatarFallback>
+          </Avatar>
+
           <div className={styles.names}>
             <div className={styles.displayName}>
               {data?.displayName ? data.displayName : "unknown"}
@@ -34,20 +40,18 @@ export const User: FC<Props> = () => {
           </div>
         </button>
       </PopoverTrigger>
-      <PopoverContent className={styles.popup}>
-        <PopoverClose onClick={() => setIsOpen(true)} className={styles.customizeButton}>
-          <LuPaintbrush /> Customize
-        </PopoverClose>
-        {/* <div
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          className="px-2 py-2 hover:bg-accent cursor-pointer dark:text-red-500"
-        >
-          dark mode
-        </div> */}
-        <button className={styles.signout}>
-          <div>Sign out</div>
-          <div className="text-muted-foreground text-sm leading-4 break-all">{data?.userName}</div>
-        </button>
+      <PopoverContent className="p-0 bg-popover left-[200px]">
+        <div className={styles.popup}>
+          <PopoverClose onClick={() => setIsOpen(true)} className={styles.customizeButton}>
+            <LuPaintbrush /> Customize
+          </PopoverClose>
+          <button className={styles.signout}>
+            <div>Sign out</div>
+            <div className="text-muted-foreground text-sm leading-4 break-all">
+              {data?.userName}
+            </div>
+          </button>
+        </div>
       </PopoverContent>
 
       {isOpen && <Customize setIsOpen={setIsOpen} />}

@@ -7,4 +7,6 @@ export interface IUser {
   displayName: string;
   isVerified: boolean;
   avatarPath: string | null;
+  following: number;
+  followers: number;
 }

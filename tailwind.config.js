@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
+  darkMode: "class",
+  // darkMode: ["class"],
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     container: {
@@ -85,7 +86,7 @@ module.exports = {
       },
     },
     screens: {
-      mobile: "480px",
+      mobile: "500px",
       sm: "640px",
       // => @media (min-width: 640px) { ... }
       md: "768px",

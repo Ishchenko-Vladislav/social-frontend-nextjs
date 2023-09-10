@@ -1,0 +1,14 @@
+.modeBlock {
+  .modes {
+    @apply flex gap-4;
+    .mode {
+      @apply border-2 rounded-[6px] border-border flex items-center justify-evenly gap-2 px-2 py-1;
+      &:hover {
+        @apply bg-accent;
+      }
+    }
+    .active {
+      @apply border-foreground;
+    }
+  }
+}

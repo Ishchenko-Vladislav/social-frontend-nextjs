@@ -2,6 +2,7 @@ import { FC, PropsWithChildren } from "react";
 import { Navigation } from "./navigation/Navigation";
 import styles from "./Layout.module.scss";
 import { SideBar } from "./sidebar/SideBar";
+import { SideMenu } from "./side-menu/SideMenu";
 interface Props {}
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
@@ -9,7 +10,10 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
     <>
       <div className={styles.layout}>
         <Navigation />
-        <main className={styles.main}>{children}</main>
+        <main className={styles.main}>
+          <SideMenu />
+          <div className="relative">{children}</div>
+        </main>
         <SideBar />
       </div>
     </>

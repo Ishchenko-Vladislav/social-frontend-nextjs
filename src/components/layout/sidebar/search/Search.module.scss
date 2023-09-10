@@ -1,7 +1,7 @@
 .search {
   @apply relative;
 
-  > input {
+  .searchInput {
     @apply bg-input rounded-full w-full p-2.5 pl-14;
     &::placeholder {
       @apply text-muted-foreground;
@@ -12,9 +12,18 @@
     &:focus + .icon {
       @apply text-primary;
     }
+
+    &:focus ~ .searchBlock {
+      @apply flex;
+    }
   }
 
   > .icon {
     @apply absolute top-1/2 -translate-y-1/2 left-5 text-2xl text-muted-foreground;
   }
+}
+
+.searchBlock {
+  @apply absolute top-14 w-full border border-border rounded-md hidden flex-col;
+  // flex-col max-h-[80%] h-fit;
 }

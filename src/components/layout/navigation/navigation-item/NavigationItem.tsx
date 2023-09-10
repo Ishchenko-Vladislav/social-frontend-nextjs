@@ -7,20 +7,22 @@ interface Props {}
 export interface INavigationItem {
   link: string;
   title: string;
+  mobile: boolean;
   FirstIcon: IconType;
   SecondIcon: IconType;
 }
 
-export const NavigationItem: FC<INavigationItem & { pathname: string }> = ({
+export const NavigationItem: FC<INavigationItem & { pathname?: string }> = ({
   title,
   link,
   pathname,
+  mobile,
   SecondIcon,
   FirstIcon,
 }) => {
   const here = pathname === link;
   return (
-    <Link href={link} className={styles.item}>
+    <Link href={link} className={cn(styles.item, { [styles.mobile]: !mobile })}>
       <button className={styles.link}>
         <div>
           {here ? (

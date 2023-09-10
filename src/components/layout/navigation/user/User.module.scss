@@ -1,12 +1,29 @@
 .user {
-  @apply max-w-[240px] overflow-hidden mt-auto p-2 xl:px-4 w-full rounded-full hover:bg-accent
-  cursor-pointer items-center gap-2 justify-center xl:justify-start hidden mobile:flex transition-colors;
+  @apply max-w-[240px] overflow-hidden 
+  mt-auto 
+  p-2 
+  mx-auto
+  xl:mx-0
+  xl:px-4 
+  w-fit
+  flex
+  rounded-full 
+  hover:bg-accent 
+  cursor-pointer 
+  items-center 
+  gap-2 
+  justify-center 
+  xl:justify-start 
+  transition-colors;
+
   &:active {
     @apply bg-accent-active;
   }
   .avatar {
-    @apply shrink-0 w-8 h-8 bg-muted-foreground rounded-full overflow-hidden flex justify-center items-center;
+    @apply shrink-0 w-8 h-8 bg-muted-foreground rounded-full 
+    overflow-hidden flex justify-center items-center;
   }
+
   .names {
     @apply hidden xl:flex flex-col text-sm overflow-hidden leading-4;
     .displayName {
@@ -25,15 +42,18 @@
 }
 
 .popup {
-  @apply px-0 py-2 shadow border rounded-md bg-popover relative;
+  // @apply w-full h-full px-0 py-2 shadow border border-border rounded-md bg-popover relative;
+  @apply bg-popover py-2 border-border shadow overflow-hidden rounded-md;
   .customizeButton {
-    @apply px-2 py-2 w-full cursor-pointer hover:bg-accent flex items-center gap-2 active:bg-accent-active;
+    @apply px-2 py-2 w-full bg-popover cursor-pointer hover:bg-accent 
+    flex items-center gap-2 active:bg-accent-active;
   }
   .signout {
     @apply px-2 py-2 hover:bg-accent cursor-pointer w-full flex flex-col;
   }
 
   &:after {
+    @apply xl:block hidden;
     content: "";
     position: absolute;
     bottom: -8px;

@@ -3,14 +3,17 @@
   > .error {
     @apply self-start text-xs text-red-500;
   }
-  > button {
-    @apply w-full h-16 bg-primary rounded-full text-white transition-all relative;
+  .button {
+    @apply w-full h-16  bg-[#15202B] rounded-full text-white transition-all relative;
     &:hover {
       @apply bg-[#1e364b];
     }
     &:disabled {
-      @apply hover:bg-primary;
+      @apply hover:bg-[#15202B];
     }
+    // .dark .button {
+    //   @apply bg-red-500;
+    // }
   }
   // > button {
   //   @apply relative border rounded-full w-full h-16 transition-all bg-primary text-white flex justify-center items-center;
