@@ -13,6 +13,8 @@ import {
   useState,
 } from "react";
 import { AuthService } from "@/services/auth/auth.service";
+import { useIsAuth } from "@/hooks/useAuth";
+import { Preloader } from "@/components/preloader/Preloader";
 
 interface IAuthorizationContext {
   isAuthorization: boolean;
@@ -25,34 +27,43 @@ export const useAuth = () => {
 };
 export const AuthorizationProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthorization, setIsAuthorization] = useState(false);
-  const pathname = usePathname();
-  const { replace } = useRouter();
-  useEffect(() => {
-    checkAuth();
-  }, [pathname]);
-  const checkAuth = async () => {
-    const access_token = Cookie.get(TOKENS_ENUM.ACCESS_TOKEN);
-    const refresh_token = Cookie.get(TOKENS_ENUM.REFRESH_TOKEN);
 
-    if (!access_token && refresh_token) {
-      try {
-        const tokens = await AuthService.refresh(refresh_token);
-        if (tokens && tokens.access_token) {
-          return AuthService.setTokensToCookie(tokens);
-        }
-      } catch (error) {
-        return replace("/login");
-      }
-    }
+  const { isLoading } = useIsAuth();
+  // const pathname = usePathname();
+  // const { replace } = useRouter();
+  // useEffect(() => {
+  //   checkAuth();
+  // }, [pathname]);
+  // const checkAuth = async () => {
+  //   const access_token = Cookie.get(TOKENS_ENUM.ACCESS_TOKEN);
+  //   const refresh_token = Cookie.get(TOKENS_ENUM.REFRESH_TOKEN);
 
-    if (publicRoute.includes(pathname) && access_token) {
-      return replace("/");
-    }
+  //   if (!access_token && refresh_token) {
+  //     try {
+  //       const tokens = await AuthService.refresh(refresh_token);
+  //       if (tokens && tokens.access_token) {
+  //         return AuthService.setTokensToCookie(tokens);
+  //       }
+  //     } catch (error) {
+  //       clearAll()
+  //       return replace(PAGES_ROUTE.login);
+  //     }
+  //   }
 
-    if (!publicRoute.includes(pathname) && !access_token && !refresh_token) {
-      return replace("/login");
-    }
-  };
+  //   if (publicRoute.includes(pathname) && access_token) {
+  //     return replace(PAGES_ROUTE.home);
+  //   }
+
+  //   if (!publicRoute.includes(pathname) && !access_token && !refresh_token) {
+  //     return replace(PAGES_ROUTE.login);
+  //   }
+  // };
+
+  // const clearAll = () => {
+  //   AuthService.logout();
+  //   localStorage && localStorage.clear();
+  // };
+  if (isLoading) return <Preloader />;
   return (
     <AuthorizationContext.Provider value={{ isAuthorization, setIsAuthorization }}>
       {children}

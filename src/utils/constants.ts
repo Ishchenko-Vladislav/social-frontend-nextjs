@@ -46,7 +46,24 @@ export const USER_ROUTE = {
   ownProfile: "/user/profile",
   profile: "/user/profile",
   search: "/user/search",
+  status: "/user/status/subscription/",
+  followers: "/user/followers/",
+  following: "/user/following/",
 };
 export const POST_ROUTE = {
   followingPosts: "/post/my/following/posts",
+  like: (id: string) => `/post/${id}/like`,
+  bookmark: "/post/bookmark/",
+  profilePosts: "/post/profile/posts",
+  profilePostsWithLikes: "/post/profile/posts/likes",
+};
+
+export const QUERY_KEY = {
+  following_posts: "following_posts",
+  profile_posts: "my_posts",
+  profile_posts_with_likes: "profile_posts_with_likes",
+  own_profile: "own_profile",
+  profile: "profile",
+  followers: "followers",
+  followings: "followings",
 };

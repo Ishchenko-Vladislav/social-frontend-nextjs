@@ -8,6 +8,8 @@ import { LuPaintbrush } from "react-icons/lu";
 import { Customize } from "./customize/Customize";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/ui/avatar";
 import { useFixed } from "@/context/FixedContext";
+import { AvatarIcon } from "@/components/ui/avatar/Avatar";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface Props {}
 
@@ -15,17 +17,19 @@ export const User: FC<Props> = () => {
   const { data, isLoading, error } = useOwnProfile();
   const [isOpen, setIsOpen] = useState(false);
   const { setOpenCustomize } = useFixed();
-
+  const { width } = useWindowSize();
+  if (width < 500) return null;
   return (
     <Popover>
       <PopoverTrigger asChild>
         <button className={styles.user}>
-          <Avatar className="w-8 h-8 shrink-0 border-0">
+          {/* <Avatar className="w-8 h-8 shrink-0 border-0">
             <AvatarImage src={data?.avatarPath || ""} />
             <AvatarFallback className="dark:bg-muted-foreground bg-muted-foreground">
               <PiUserLight className="text-2xl" />
             </AvatarFallback>
-          </Avatar>
+          </Avatar> */}
+          <AvatarIcon avatarPath={data?.avatarPath} />
 
           <div className={styles.names}>
             <div className={styles.displayName}>

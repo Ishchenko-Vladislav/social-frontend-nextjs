@@ -34,6 +34,10 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(error);
       }
     }
+    // if (error.response && error.response.status === 401) {
+    //   console.log("errrrrrroooooorrr");
+    //   AuthService.logout();
+    // }
     return Promise.reject(error);
 
     // if (error.response && error.response.status === 401 && !originalRequest._retry) {

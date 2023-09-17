@@ -6,6 +6,7 @@
   py-2 h-14 px-1 w-full
   bg-background
   text-foreground
+  overflow-y-auto
   mobile:sticky bottom-0
   mobile:top-0
   mobile:min-h-screen
@@ -13,6 +14,6 @@
   mobile:border-none
   mobile:w-16
   mobile:bg-background
-  mobile:h-auto;
+  mobile:max-h-screen;
   z-index: 3;
 }

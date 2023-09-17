@@ -18,15 +18,9 @@ export const AuthService = {
     return response.data;
   },
 
-  async logout() {
-    // const { replace } = useRouter();
-    // const response = await axios.post(API_URL + AUTH_ROUTE.logout);
-    // return response.data;
-    // this.removeAccessTokenFromCookie();
+  logout() {
     Cookie.remove(TOKENS_ENUM.ACCESS_TOKEN);
     Cookie.remove(TOKENS_ENUM.REFRESH_TOKEN);
-    // replace("/login");
-    // redirect("/");
   },
 
   async refresh(token: string) {

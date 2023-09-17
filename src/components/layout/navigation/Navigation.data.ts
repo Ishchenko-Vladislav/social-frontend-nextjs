@@ -21,7 +21,6 @@ export const navigation: INavigationItem[] = [
     link: "/explore",
     title: "Explore",
     mobile: true,
-
     FirstIcon: RiSearch2Line,
     SecondIcon: RiSearch2Fill,
   },
@@ -29,7 +28,6 @@ export const navigation: INavigationItem[] = [
     link: "/notification",
     title: "Notification",
     mobile: true,
-
     FirstIcon: RiNotification2Line,
     SecondIcon: RiNotification2Fill,
   },
@@ -37,7 +35,6 @@ export const navigation: INavigationItem[] = [
     link: "/messages",
     title: "Messages",
     mobile: true,
-
     FirstIcon: MdOutlineMail,
     SecondIcon: MdMail,
   },
@@ -45,7 +42,6 @@ export const navigation: INavigationItem[] = [
     link: "/profile",
     title: "Profile",
     mobile: false,
-
     FirstIcon: FaRegUser,
     SecondIcon: FaUser,
   },

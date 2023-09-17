@@ -8,7 +8,13 @@ import { ThemeConfigProvider } from "@/context/ThemeConfig";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const RootProvider: FC<PropsWithChildren> = ({ children }) => {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <ThemeConfigProvider>

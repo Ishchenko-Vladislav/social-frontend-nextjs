@@ -5,11 +5,12 @@ import { useWindowSize } from "@/hooks/useWindowSize";
 import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/ui/avatar";
 import cn from "classnames";
-import { useProfile } from "@/hooks/user/useProfile";
+import { useOwnProfile } from "@/hooks/user/useProfile";
 import { PiUserLight } from "react-icons/pi";
 import { Menu } from "./menu/Menu";
 import { Customize } from "./customize/Customize";
 import { ModalProvider } from "@/shadcn/ui/ModalProvider";
+import { AvatarIcon } from "@/components/ui/avatar/Avatar";
 
 interface Props {}
 
@@ -18,7 +19,7 @@ export const SideMenu: FC<Props> = () => {
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenCustomize, setIsOpenCustomize] = useState(false);
-  const { data, isLoading, error } = useProfile();
+  const { data, isLoading, error } = useOwnProfile();
 
   const [isHide, setIsHide] = useState<boolean>(false);
   const lastScrollPoint = useRef(0);
@@ -46,12 +47,13 @@ export const SideMenu: FC<Props> = () => {
           [styles.scrollable]: isHide,
         })}
       >
-        <Avatar onClick={() => setIsOpen(true)} className="w-8 h-8 shrink-0 border-0">
+        <AvatarIcon onClick={() => setIsOpen(true)} avatarPath={data?.avatarPath} />
+        {/* <Avatar onClick={() => setIsOpen(true)} className="w-8 h-8 shrink-0 border-0">
           <AvatarImage src={data?.avatarPath || ""} />
           <AvatarFallback className="dark:bg-muted-foreground bg-muted-foreground">
             <PiUserLight className="text-2xl" />
           </AvatarFallback>
-        </Avatar>
+        </Avatar> */}
         <div className={styles.logo}>Social</div>
         {/* <AnimatePresence>
           {isOpen && (

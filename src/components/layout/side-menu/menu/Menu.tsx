@@ -17,6 +17,7 @@ import {
 import { Customize } from "../customize/Customize";
 import { useTheme } from "next-themes";
 import { LuPaintbrush } from "react-icons/lu";
+import { AvatarIcon } from "@/components/ui/avatar/Avatar";
 
 interface Props {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -68,12 +69,13 @@ export const Menu: FC<Props> = ({ setIsOpen, setIsOpenCustomize }) => {
         <header className="px-4">
           <div>
             <Link onClick={() => setIsOpen(false)} href={"/profile"}>
-              <Avatar onClick={() => setIsOpen(true)} className="w-8 h-8 shrink-0 border-0">
+              <AvatarIcon onClick={() => setIsOpen(true)} avatarPath={data?.avatarPath} />
+              {/* <Avatar onClick={() => setIsOpen(true)} className="w-8 h-8 shrink-0 border-0">
                 <AvatarImage src={data?.avatarPath || ""} />
                 <AvatarFallback className="dark:bg-muted-foreground bg-muted-foreground">
                   <PiUserLight className="text-2xl" />
                 </AvatarFallback>
-              </Avatar>
+              </Avatar> */}
             </Link>
             <div></div>
           </div>

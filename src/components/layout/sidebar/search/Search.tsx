@@ -35,7 +35,7 @@ export const Search: FC<Props> = () => {
               else return <SearchHashtag key={el.id} {...(el as ITag)} />;
             })
           ) : (
-            <div>try searching for people, or hashtags of interest</div>
+            <div className="p-3 text-center">try searching for people, or hashtags of interest</div>
           )}
         </div>
       </div>
@@ -59,7 +59,7 @@ export const SearchHashtag: FC<ITag> = (tag) => {
 
 export const SearchItem: FC<IUser> = (user) => {
   return (
-    <Link href={`profile/${user.userName}`} className="flex gap-4 items-center hover:bg-accent p-2">
+    <Link href={`/${user.userName}`} className="flex gap-4 items-center hover:bg-accent p-2">
       <Avatar className="w-8 h-8 shrink-0 border-0">
         <AvatarImage src={user?.avatarPath || ""} />
         <AvatarFallback className="dark:bg-muted-foreground bg-muted-foreground">
@@ -68,7 +68,7 @@ export const SearchItem: FC<IUser> = (user) => {
       </Avatar>
       <div className="flex flex-col">
         <div className="text-sm">{user.displayName}</div>
-        <div className="text-muted-foreground text-xs">{user.userName}</div>
+        <div className="text-muted-foreground text-xs">@{user.userName}</div>
       </div>
     </Link>
   );

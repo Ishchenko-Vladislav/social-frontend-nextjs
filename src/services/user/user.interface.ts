@@ -7,6 +7,16 @@ export interface IUser {
   displayName: string;
   isVerified: boolean;
   avatarPath: string | null;
-  following: number;
-  followers: number;
+  following: [];
+  followers: [];
+  followersCount: number;
+  followingCount: number;
+}
+
+export interface ISub {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  toUser: IUser;
+  fromUser: IUser;
 }

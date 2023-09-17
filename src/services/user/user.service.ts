@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/api/instance";
 import { API_URL, USER_ROUTE } from "@/utils/constants";
-import { IUser } from "./user.interface";
+import { ISub, IUser } from "./user.interface";
 
 export const UserService = {
   async getOwnProfile() {
@@ -11,6 +11,21 @@ export const UserService = {
     const url = API_URL + USER_ROUTE.profile;
     const uri = userId ? url + `/${userId}` : url;
     const response = await axiosInstance.get<IUser>(uri);
+    return response.data;
+  },
+
+  async statusIsSubscription(userId: string) {
+    const response = await axiosInstance.get<{ status: boolean }>(
+      API_URL + USER_ROUTE.status + userId
+    );
+    return response.data;
+  },
+  async getFollowers(userName: string) {
+    const response = await axiosInstance.get<ISub[]>(API_URL + USER_ROUTE.followers + userName);
+    return response.data;
+  },
+  async getFollowing(userName: string) {
+    const response = await axiosInstance.get<ISub[]>(API_URL + USER_ROUTE.following + userName);
     return response.data;
   },
 };

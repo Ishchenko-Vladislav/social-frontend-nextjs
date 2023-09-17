@@ -5,7 +5,11 @@ export interface IPost {
   createdAt: string;
   updatedAt: string;
   text: string;
-  comment: any;
-  likes: any;
+  commentsCount: number;
+  likesCount: number;
+  bookmarksCount: number;
+  likes: Ien[];
+  bookmarks: Ien[];
   user: IUser;
 }
+type Ien = { id: string };

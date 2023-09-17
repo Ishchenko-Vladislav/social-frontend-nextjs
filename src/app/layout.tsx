@@ -1,10 +1,13 @@
 import { RootProvider } from "@/providers";
 import type { Metadata } from "next";
 import { Inter, Nunito_Sans } from "next/font/google";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 const nunito = Nunito_Sans({ subsets: ["latin"] });
+dayjs.extend(relativeTime);
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +19,12 @@ export const metadata: Metadata = {
   themeColor: "#fff",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout(props: { children: React.ReactNode }) {
+  // console.log("root", props);
   return (
     <html lang="en">
       <body className={nunito.className}>
-        <RootProvider>{children}</RootProvider>
+        <RootProvider>{props.children}</RootProvider>
       </body>
     </html>
   );
