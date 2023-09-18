@@ -21,6 +21,7 @@ export const Tabs: FC<Props> = ({ array, userName }) => {
         !!array.length &&
         array.map((tab) => (
           <Link
+            replace
             key={tab.title}
             href={"/" + userName + tab.url}
             className="px-4 hover:bg-accent transition-colors cursor-pointer"

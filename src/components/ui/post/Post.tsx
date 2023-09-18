@@ -1,7 +1,7 @@
 "use client";
-import { IPost } from "@/services/post/post.interface";
+import { IPostShort } from "@/services/post/post.interface";
 import { FC, MouseEvent, HTMLAttributes, PropsWithChildren } from "react";
-import { AvatarIcon } from "../avatar/Avatar";
+import { AvatarIcon, UserHover } from "../avatar/Avatar";
 import { BiMessageRounded } from "react-icons/bi";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
@@ -20,7 +20,7 @@ import { QUERY_KEY } from "@/utils/constants";
 import { Like } from "./like/Like";
 import { Comment } from "./comment/Comment";
 import { Bookmark } from "./bookmark/Bookmark";
-interface Props extends IPost {
+interface Props extends IPostShort {
   queryKey: string;
 }
 
@@ -33,7 +33,9 @@ export const Post: FC<Props> = ({ queryKey, ...post }) => {
   const handle = (e: MouseEvent<HTMLDivElement>) => {
     // if(e.target)
     // push("/create", );
-    console.log(e.target);
+    const url = "/" + post.user.userName + "/status/" + post.id;
+    push(url);
+    console.log("need", e.target);
   };
   const commentHandle = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -43,20 +45,24 @@ export const Post: FC<Props> = ({ queryKey, ...post }) => {
   return (
     <div
       onClick={handle}
-      className="p-2 hover:bg-accent/20 flex items-start gap-3 cursor-pointer border-b border-border"
+      className="p-1 sm:p-2 hover:bg-accent/20 flex items-start gap-3 cursor-pointer border-b border-border"
     >
-      <UserHover following={!!post.user.followers} user={post.user}>
-        <Link href={"/"} className="p-1 block">
-          <AvatarIcon avatarPath={post.user.avatarPath} />
+      {/* <UserHover following={!!post.user.followers} user={post.user}>
+        <Link href={"/" + post.user.userName} className="p-1 block">
         </Link>
-      </UserHover>
+      </UserHover> */}
+      <AvatarIcon isFollowing={!!post.user.followers} user={post.user} />
       <div className="w-full">
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-x-2 flex-wrap leading-4 overflow-hidden">
           <UserHover following={!!post.user.followers} user={post.user}>
-            <span className="font-medium hover:underline">{post.user.displayName}</span>
+            <Link href={"/" + post.user.userName} className="font-medium hover:underline">
+              {post.user.displayName}
+            </Link>
           </UserHover>
-          <span className="text-muted-foreground text-sm">{post.user.userName}</span>
-          <span className="text-muted-foreground text-sm">· {dayjs(post.createdAt).fromNow()}</span>
+          <div className="sm:text-sm text-xs">
+            <span className="text-muted-foreground ">{post.user.userName}</span>
+            <span className="text-muted-foreground ">· {dayjs(post.createdAt).fromNow()}</span>
+          </div>
         </div>
         <div className="text-sm">{post.text}</div>
         <div className="flex w-full gap-4 items-center pt-1 text-muted-foreground no-link">
@@ -79,34 +85,38 @@ export const Post: FC<Props> = ({ queryKey, ...post }) => {
   );
 };
 
-interface IUserHoverProps {
-  user: IUser;
-  following: boolean;
-}
-const UserHover: FC<PropsWithChildren<IUserHoverProps>> = ({ children, user, following }) => {
-  // const { data, isLoading } = useStatus(user.id);
-  // if (isLoading) return null;
-  return (
-    <HoverCard>
-      <HoverCardTrigger>{children}</HoverCardTrigger>
-      <HoverCardContent>
-        <div className="flex justify-between items-start">
-          <div>
-            <AvatarIcon className="w-11 h-11" avatarPath={user.avatarPath} />
-          </div>
-          <button className="px-3 py-1 bg-foreground rounded-full text-background hover:bg-foreground/80 transition-colors">
-            {following ? <div>unfollow</div> : <div>follow</div>}
-          </button>
-        </div>
-        <div>
-          <div className="pt-2">{user.displayName}</div>
-          <div className="text-muted-foreground leading-3">@{user.userName}</div>
-        </div>
-        <div className="flex gap-3 items-center text-sm pt-3">
-          <div>{user.followingCount} following</div>
-          <div>{user.followersCount} followers</div>
-        </div>
-      </HoverCardContent>
-    </HoverCard>
-  );
-};
+// interface IUserHoverProps {
+//   user: IUser;
+//   following: boolean;
+// }
+// const UserHover: FC<PropsWithChildren<IUserHoverProps>> = ({ children, user, following }) => {
+//   // const { data, isLoading } = useStatus(user.id);
+//   // if (isLoading) return null;
+//   return (
+//     <HoverCard>
+//       <HoverCardTrigger>{children}</HoverCardTrigger>
+//       <HoverCardContent>
+//         <div className="flex justify-between items-start">
+//           <Link href={"/" + user.userName}>
+//             <AvatarIcon className="w-11 h-11" avatarPath={user.avatarPath} />
+//           </Link>
+//           <button className="px-3 py-1 bg-foreground rounded-full text-background hover:bg-foreground/80 transition-colors">
+//             {following ? <div>unfollow</div> : <div>follow</div>}
+//           </button>
+//         </div>
+//         <div>
+//           <div className="pt-2">{user.displayName}</div>
+//           <div className="text-muted-foreground leading-3">@{user.userName}</div>
+//         </div>
+//         <div className="flex gap-3 items-center text-sm pt-3">
+//           <Link href={"/" + user.userName + "/following"} className="hover:underline">
+//             {user.followingCount} following
+//           </Link>
+//           <Link href={"/" + user.userName + "/followers"} className="hover:underline">
+//             {user.followersCount} followers
+//           </Link>
+//         </div>
+//       </HoverCardContent>
+//     </HoverCard>
+//   );
+// };

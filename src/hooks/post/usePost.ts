@@ -25,7 +25,7 @@ export const useGetPosts = () => {
 };
 export const useGetProfilePosts = (userName: string) => {
   return useQuery({
-    queryKey: [QUERY_KEY.profile_posts],
+    queryKey: [QUERY_KEY.profile_posts, { userName }],
     queryFn: () => PostService.getProfilePosts(userName),
     onError(err: AxiosError) {
       console.log("useProfile", err);
@@ -45,8 +45,27 @@ export const useGetProfilePosts = (userName: string) => {
 };
 export const useGetProfilePostsWithLikes = (userName: string) => {
   return useQuery({
-    queryKey: [QUERY_KEY.profile_posts_with_likes],
+    queryKey: [QUERY_KEY.profile_posts_with_likes, { userName }],
     queryFn: () => PostService.getProfilePostsWithLikes(userName),
+    onError(err: AxiosError) {
+      console.log("useProfile", err);
+
+      // if (err.response?.status === 401) {
+      //   AuthService.logout();
+      //   replace("/login");
+      // }
+      // console.log(err);
+    },
+    // retry: 0,
+    // select: ({data}) => data,
+
+    keepPreviousData: true,
+  });
+};
+export const useGetPostById = (postId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.profile_posts_with_likes, { postId }],
+    queryFn: () => PostService.getPostById(postId),
     onError(err: AxiosError) {
       console.log("useProfile", err);
 

@@ -1,5 +1,5 @@
 "use client";
-import { AvatarIcon } from "@/components/ui/avatar/Avatar";
+import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
 import { HeaderBack } from "@/components/ui/header/HeaderBack";
 import { useOwnProfile, useProfile } from "@/hooks/user/useProfile";
 import { FC } from "react";
@@ -13,34 +13,39 @@ import Link from "next/link";
 import cn from "classnames";
 import { Tabs } from "@/components/ui/tabs/Tabs";
 import { tabs } from "./profile.data";
+import { useAuth } from "@/context/auth/Authorization";
 
 interface Props {
   userName: string;
 }
 
 export const Profile: FC<Props> = ({ userName }) => {
-  // const {} = useOwnProfile();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  const search = searchParams.get("name");
+  const { user } = useAuth();
   const { data, isLoading } = useProfile(userName);
-  console.log("search", search);
+
+  const button = () => {
+    const isMe = data && data.id === user.id;
+    if (isMe) return <span>settings</span>;
+    return data?.followers[0] ? "unfollow" : "follow";
+  };
   const createdAt = dayjs(data?.createdAt).format("MMMM YYYY").toString();
-  const postsUrl = "/" + userName;
-  const likesUrl = "/" + userName + "/likes";
+  // const postsUrl = "/" + userName;
+  // const likesUrl = "/" + userName + "/likes";
   const followersUrl = "/" + userName + "/followers";
   const followingsUrl = "/" + userName + "/following";
   return (
     <div>
       <HeaderBack title="Profile" />
-      <div className="w-full h-48 bg-secondary"></div>
+      <div className="w-full h-36 sm:h-48 bg-secondary"></div>
       <div className="flex items-end justify-between px-6 -mt-16">
         <div className="p-1.5 bg-background rounded-full flex justify-center items-center">
-          <AvatarIcon className="w-32 h-32" avatarPath={data?.avatarPath || ""} />
+          <AvatarIconPrototype
+            className="sm:w-32 sm:h-32 w-24 h-24"
+            avatarPath={data?.avatarPath || ""}
+          />
         </div>
-        <div className="px-4 py-1.5 text-lg my-2 bg-primary hover:bg-primary/80 transition-colors rounded-full w-fit text-primary-foreground cursor-pointer">
-          settings
+        <div className="px-4 py-1.5 text-lg sm:my-4 bg-primary hover:bg-primary/80 transition-colors rounded-full w-fit text-primary-foreground cursor-pointer">
+          {button()}
         </div>
       </div>
 

@@ -8,7 +8,7 @@ import { LuPaintbrush } from "react-icons/lu";
 import { Customize } from "./customize/Customize";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/ui/avatar";
 import { useFixed } from "@/context/FixedContext";
-import { AvatarIcon } from "@/components/ui/avatar/Avatar";
+import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
 import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface Props {}
@@ -29,13 +29,13 @@ export const User: FC<Props> = () => {
               <PiUserLight className="text-2xl" />
             </AvatarFallback>
           </Avatar> */}
-          <AvatarIcon avatarPath={data?.avatarPath} />
+          <AvatarIconPrototype avatarPath={data?.avatarPath} />
 
           <div className={styles.names}>
             <div className={styles.displayName}>
               {data?.displayName ? data.displayName : "unknown"}
             </div>
-            <p className={styles.userName}>{data?.userName}</p>
+            <p className={styles.userName}>@{data?.userName}</p>
           </div>
           <div className={styles.info}>
             <span></span>
@@ -52,7 +52,7 @@ export const User: FC<Props> = () => {
           <button className={styles.signout}>
             <div>Sign out</div>
             <div className="text-muted-foreground text-sm leading-4 break-all">
-              {data?.userName}
+              @{data?.userName}
             </div>
           </button>
         </div>

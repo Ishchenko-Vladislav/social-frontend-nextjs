@@ -10,17 +10,24 @@ import { PiUserLight } from "react-icons/pi";
 import { Menu } from "./menu/Menu";
 import { Customize } from "./customize/Customize";
 import { ModalProvider } from "@/shadcn/ui/ModalProvider";
-import { AvatarIcon } from "@/components/ui/avatar/Avatar";
+import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
+import { usePathname } from "next/navigation";
 
 interface Props {}
-
+interface Idictionary {
+  [key: string]: boolean;
+}
 export const SideMenu: FC<Props> = () => {
   const { width } = useWindowSize();
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   const [isOpenCustomize, setIsOpenCustomize] = useState(false);
   const { data, isLoading, error } = useOwnProfile();
-
+  const not = (path: string) => dictionary[path] || false;
+  const dictionary: Idictionary = {
+    "/": true,
+  };
   const [isHide, setIsHide] = useState<boolean>(false);
   const lastScrollPoint = useRef(0);
   useEffect(() => {
@@ -38,8 +45,7 @@ export const SideMenu: FC<Props> = () => {
     }
     lastScrollPoint.current = window.scrollY;
   };
-  if (!mounted) return null;
-  if (width > 500) return null;
+  if (width > 500 || !mounted || !not(pathname)) return null;
   return (
     <>
       <motion.div
@@ -47,7 +53,7 @@ export const SideMenu: FC<Props> = () => {
           [styles.scrollable]: isHide,
         })}
       >
-        <AvatarIcon onClick={() => setIsOpen(true)} avatarPath={data?.avatarPath} />
+        <AvatarIconPrototype onClick={() => setIsOpen(true)} avatarPath={data?.avatarPath} />
         {/* <Avatar onClick={() => setIsOpen(true)} className="w-8 h-8 shrink-0 border-0">
           <AvatarImage src={data?.avatarPath || ""} />
           <AvatarFallback className="dark:bg-muted-foreground bg-muted-foreground">

@@ -13,12 +13,13 @@ import {
   useState,
 } from "react";
 import { AuthService } from "@/services/auth/auth.service";
-import { useIsAuth } from "@/hooks/useAuth";
+import { IAuthUser, useIsAuth } from "@/hooks/useAuth";
 import { Preloader } from "@/components/preloader/Preloader";
 
 interface IAuthorizationContext {
-  isAuthorization: boolean;
-  setIsAuthorization: Dispatch<SetStateAction<boolean>>;
+  // isAuthorization: boolean;
+  // setIsAuthorization: Dispatch<SetStateAction<boolean>>;
+  user: IAuthUser;
 }
 
 const AuthorizationContext = createContext({} as IAuthorizationContext);
@@ -26,9 +27,9 @@ export const useAuth = () => {
   return useContext(AuthorizationContext);
 };
 export const AuthorizationProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthorization, setIsAuthorization] = useState(false);
+  // const [isAuthorization, setIsAuthorization] = useState(false);
 
-  const { isLoading } = useIsAuth();
+  const { isLoading, user } = useIsAuth();
   // const pathname = usePathname();
   // const { replace } = useRouter();
   // useEffect(() => {
@@ -64,11 +65,7 @@ export const AuthorizationProvider = ({ children }: { children: ReactNode }) => 
   //   localStorage && localStorage.clear();
   // };
   if (isLoading) return <Preloader />;
-  return (
-    <AuthorizationContext.Provider value={{ isAuthorization, setIsAuthorization }}>
-      {children}
-    </AuthorizationContext.Provider>
-  );
+  return <AuthorizationContext.Provider value={{ user }}>{children}</AuthorizationContext.Provider>;
 };
 
 const publicRoute = [PAGES_ROUTE.login, PAGES_ROUTE.register];

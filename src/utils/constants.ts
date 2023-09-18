@@ -56,6 +56,7 @@ export const POST_ROUTE = {
   bookmark: "/post/bookmark/",
   profilePosts: "/post/profile/posts",
   profilePostsWithLikes: "/post/profile/posts/likes",
+  postById: "/post/",
 };
 
 export const QUERY_KEY = {

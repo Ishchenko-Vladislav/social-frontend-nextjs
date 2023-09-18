@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 import Cookie from "js-cookie";
 import { QUERY_KEY } from "@/utils/constants";
 export const useOwnProfile = () => {
-  const { replace } = useRouter();
+  // const { replace } = useRouter();
   return useQuery({
     queryKey: [QUERY_KEY.own_profile],
     queryFn: () => UserService.getOwnProfile(),
     onSuccess: (data) => {
       Cookie.set("user_name", data.userName);
+      console.log("own profile was uploaded");
     },
     onError(err: AxiosError) {
       console.log("useProfile", err);
@@ -23,6 +24,8 @@ export const useOwnProfile = () => {
       // console.log(err);
     },
     // retry: 0,
+    staleTime: 1000 * 60 * 60 * 24 * 365,
+    cacheTime: 1000 * 60 * 60 * 24 * 365,
     keepPreviousData: true,
   });
 };

@@ -6,8 +6,8 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import { ReactNode } from "react";
 const layout = (props: { children: ReactNode; publish: ReactNode }) => {
   return (
-    <Layout>
-      <AuthorizationProvider>
+    <AuthorizationProvider>
+      <Layout>
         {props.children}
         {/* {segments === "bbb" && (
           <div>
@@ -15,8 +15,8 @@ const layout = (props: { children: ReactNode; publish: ReactNode }) => {
             <div className="bg-white p-5">asdasd</div>
           </div>
         )} */}
-      </AuthorizationProvider>
-    </Layout>
+      </Layout>
+    </AuthorizationProvider>
   );
 };
 export default layout;

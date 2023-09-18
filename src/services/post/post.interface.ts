@@ -1,9 +1,9 @@
 import { IUser } from "../user/user.interface";
 
-export interface IPost {
+export interface IPostShort {
   id: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   text: string;
   commentsCount: number;
   likesCount: number;
@@ -13,3 +13,20 @@ export interface IPost {
   user: IUser;
 }
 type Ien = { id: string };
+interface ITag {
+  id: string;
+  name: string;
+  postCount: number;
+}
+export interface IPost {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  text: string;
+  commentsCount: number;
+  likesCount: number;
+  bookmarksCount: number;
+  comments: [];
+  user: IUser;
+  tags: ITag[];
+}

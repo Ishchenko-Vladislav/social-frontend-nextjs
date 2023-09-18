@@ -1,10 +1,10 @@
 import { axiosInstance } from "@/api/instance";
 import { API_URL, POST_ROUTE } from "@/utils/constants";
-import { IPost } from "./post.interface";
+import { IPost, IPostShort } from "./post.interface";
 
 export const PostService = {
   async getFollowingPosts() {
-    const response = await axiosInstance.get<IPost[]>(API_URL + POST_ROUTE.followingPosts);
+    const response = await axiosInstance.get<IPostShort[]>(API_URL + POST_ROUTE.followingPosts);
     return response.data;
   },
 
@@ -19,15 +19,19 @@ export const PostService = {
   },
 
   async getProfilePosts(userName: string) {
-    const response = await axiosInstance.get<IPost[]>(
+    const response = await axiosInstance.get<IPostShort[]>(
       API_URL + POST_ROUTE.profilePosts + "/" + userName
     );
     return response.data;
   },
   async getProfilePostsWithLikes(userName: string) {
-    const response = await axiosInstance.get<IPost[]>(
+    const response = await axiosInstance.get<IPostShort[]>(
       API_URL + POST_ROUTE.profilePostsWithLikes + "/" + userName
     );
+    return response.data;
+  },
+  async getPostById(postId: string) {
+    const response = await axiosInstance.get<IPost>(API_URL + POST_ROUTE.postById + postId);
     return response.data;
   },
 };

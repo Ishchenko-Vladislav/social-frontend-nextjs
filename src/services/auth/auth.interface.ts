@@ -13,4 +13,6 @@ export interface ITokens {
 }
 export interface IStatus {
   status: boolean;
+  id: string;
+  userName: string;
 }

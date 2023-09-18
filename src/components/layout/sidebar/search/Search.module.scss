@@ -13,17 +13,23 @@
       @apply text-primary;
     }
 
-    &:focus ~ .searchBlock {
-      @apply flex;
-    }
+    // &:focus ~ .searchBlock {
+    //   @apply flex;
+    // }
   }
 
   > .icon {
-    @apply absolute top-1/2 -translate-y-1/2 left-5 text-2xl text-muted-foreground;
+    @apply absolute top-1/2 -translate-y-1/2 left-5 text-2xl text-muted-foreground pointer-events-none;
   }
 }
 
 .searchBlock {
-  @apply absolute top-14 w-full border border-border rounded-md hidden flex-col;
+  @apply absolute top-14 w-full border border-border rounded-md  flex-col;
   // flex-col max-h-[80%] h-fit;
+}
+.searchBlock[data-open="false"] {
+  @apply hidden;
+}
+.searchBlock[data-open="true"] {
+  @apply flex;
 }

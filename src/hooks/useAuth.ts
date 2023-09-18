@@ -61,15 +61,23 @@ export const useRegister = () => {
     },
   });
 };
-type AuthState = "loading" | "unAuthorization" | "authorization";
+
+// USE IS AUTH --------------------------------------------------------------------------------------
+// type AuthState = "loading" | "unAuthorization" | "authorization";
 type VerifyToken = "loading" | "un_authorization" | "authorization" | "error";
+export interface IAuthUser {
+  id: string;
+  userName: string;
+}
 export const useIsAuth = () => {
   const pathname = usePathname();
   const { replace } = useRouter();
   const { setTheme } = useTheme();
   const { setConfig } = useConfig();
   // const [isAuth, setIsAuth] = useState(false);
-  const [isAuth, setIsAuth] = useState<AuthState>("loading");
+  // const [isAuth, setIsAuth] = useState<AuthState>("loading");
+
+  const [user, setUser] = useState<IAuthUser>({ id: "", userName: "" });
   const [isLoading, setIsLoading] = useState(true);
   const [isVerify, setIsVerify] = useState<VerifyToken>("loading");
   // const [userName, setUserName] = useState("");
@@ -127,8 +135,10 @@ export const useIsAuth = () => {
       try {
         const s = await AuthService.getStatus();
         if (s) {
-          if (s.status) return setIsVerify("authorization");
-          else return setIsVerify("un_authorization");
+          if (s.status) {
+            setUser({ id: s.id, userName: s.userName });
+            setIsVerify("authorization");
+          } else return setIsVerify("un_authorization");
         }
       } catch (error: any) {
         // console.log("auth error", error);
@@ -166,7 +176,7 @@ export const useIsAuth = () => {
   //   return () => {};
   // }, [isAuth]);
 
-  return { isLoading };
+  return { isLoading, user };
 };
 
 // export const useAuth = () => {
