@@ -16,11 +16,9 @@ interface IAvatarIcon {
   user: IUser;
 }
 export const AvatarIcon: FC<IAvatarIcon> = ({ isFollowing, user }) => {
-  console.log("avatar icon", user);
   if (!user) return null;
   const handle = (e: any) => {
     e.stopPropagation();
-    // console.log("commentHandle");
   };
   return (
     <div onClick={handle}>
@@ -38,7 +36,6 @@ export const AvatarIconPrototype: FC<Props> = ({ avatarPath, className, ...atr }
     <Avatar {...atr} className={cn("w-8 h-8 shrink-0 border-0", className)}>
       <AvatarImage src={avatarPath || ""} />
       <AvatarFallback className="relative">
-        {/* <PiUserLight className={cn("text-2xl", fallbackStyle)} /> */}
         <Image src={"/default_profile.png"} alt="default_profile" fill />
       </AvatarFallback>
     </Avatar>
@@ -54,9 +51,6 @@ export const UserHover: FC<PropsWithChildren<IUserHoverProps>> = ({
   user,
   following,
 }) => {
-  // const { data, isLoading } = useStatus(user.id);
-  // if (isLoading) return null;
-  console.log(user, "51");
   if (!user) return null;
   return (
     <HoverCard>

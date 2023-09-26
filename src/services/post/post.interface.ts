@@ -27,6 +27,13 @@ export interface IPost {
   likesCount: number;
   bookmarksCount: number;
   comments: [];
+  likes: Ien[];
+  bookmarks: Ien[];
   user: IUser;
   tags: ITag[];
+}
+
+export interface IBookmarks {
+  id: string;
+  post: IPostShort;
 }

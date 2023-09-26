@@ -54,6 +54,7 @@ export const POST_ROUTE = {
   followingPosts: "/post/my/following/posts",
   like: (id: string) => `/post/${id}/like`,
   bookmark: "/post/bookmark/",
+  bookmarks: "/post/bookmarks",
   profilePosts: "/post/profile/posts",
   profilePostsWithLikes: "/post/profile/posts/likes",
   postById: "/post/",
@@ -67,4 +68,6 @@ export const QUERY_KEY = {
   profile: "profile",
   followers: "followers",
   followings: "followings",
+  bookmarks: "bookmarks",
+  post_by_id: "post_by_id",
 };

@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/ui/avatar";
 import { useOwnProfile } from "@/hooks/user/useProfile";
 import { PiUserLight } from "react-icons/pi";
-import { AvatarIcon } from "@/components/ui/avatar/Avatar";
+import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
 
 interface Props {}
 
@@ -19,11 +19,11 @@ export const Publish: FC<Props> = () => {
             <PiUserLight className="text-2xl" />
           </AvatarFallback>
         </Avatar> */}
-        <AvatarIcon avatarPath={data?.avatarPath} />
-        <div>What's new?</div>
+        <AvatarIconPrototype avatarPath={data?.avatarPath} />
+        <div>What is happening?</div>
       </div>
       <button className="bg-primary text-primary-foreground px-5 py-2 rounded-full hover:bg-primary/75 transition-colors">
-        Publish the post
+        Post
       </button>
     </div>
   );

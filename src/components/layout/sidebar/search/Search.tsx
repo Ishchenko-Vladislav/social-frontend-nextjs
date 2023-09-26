@@ -78,7 +78,7 @@ export const FindBlock: FC<IFindBlock> = ({ data, searchTerms, setIsOpen }) => {
           else return <SearchHashtag key={el.id} {...(el as ITag)} />;
         })
       ) : (
-        <div className="p-3 text-center">try searching for people, or hashtags of interest</div>
+        <div className="p-3 text-center">Try searching for people, or hashtags of interest</div>
       )}
     </div>
   );

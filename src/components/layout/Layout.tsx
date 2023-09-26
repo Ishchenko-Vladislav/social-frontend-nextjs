@@ -12,7 +12,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
         <Navigation />
         <main className={styles.main}>
           <SideMenu />
-          <div className="relative">{children}</div>
+          <div className="relative min-h-screen flex flex-col">{children}</div>
         </main>
         <SideBar />
       </div>

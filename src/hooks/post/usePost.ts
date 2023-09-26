@@ -8,7 +8,7 @@ export const useGetPosts = () => {
     queryKey: [QUERY_KEY.following_posts],
     queryFn: () => PostService.getFollowingPosts(),
     onError(err: AxiosError) {
-      console.log("useProfile", err);
+      console.log("useGetPosts", err);
 
       // if (err.response?.status === 401) {
       //   AuthService.logout();
@@ -28,7 +28,7 @@ export const useGetProfilePosts = (userName: string) => {
     queryKey: [QUERY_KEY.profile_posts, { userName }],
     queryFn: () => PostService.getProfilePosts(userName),
     onError(err: AxiosError) {
-      console.log("useProfile", err);
+      console.log("useGetProfilePosts", err);
 
       // if (err.response?.status === 401) {
       //   AuthService.logout();
@@ -48,7 +48,7 @@ export const useGetProfilePostsWithLikes = (userName: string) => {
     queryKey: [QUERY_KEY.profile_posts_with_likes, { userName }],
     queryFn: () => PostService.getProfilePostsWithLikes(userName),
     onError(err: AxiosError) {
-      console.log("useProfile", err);
+      console.log("useGetProfilePostsWithLikes", err);
 
       // if (err.response?.status === 401) {
       //   AuthService.logout();
@@ -64,10 +64,10 @@ export const useGetProfilePostsWithLikes = (userName: string) => {
 };
 export const useGetPostById = (postId: string) => {
   return useQuery({
-    queryKey: [QUERY_KEY.profile_posts_with_likes, { postId }],
+    queryKey: [QUERY_KEY.post_by_id, { postId }],
     queryFn: () => PostService.getPostById(postId),
     onError(err: AxiosError) {
-      console.log("useProfile", err);
+      console.log("useGetPostById", err);
 
       // if (err.response?.status === 401) {
       //   AuthService.logout();
@@ -78,6 +78,17 @@ export const useGetPostById = (postId: string) => {
     // retry: 0,
     // select: ({data}) => data,
 
+    keepPreviousData: true,
+  });
+};
+export const useBookmarks = () => {
+  return useQuery({
+    queryKey: [QUERY_KEY.bookmarks],
+    queryFn: () => PostService.getBookmarks(),
+    onError(err: AxiosError) {
+      console.log("bookmarks", err);
+    },
+    cacheTime: 1000 * 60 * 60 * 24 * 7,
     keepPreviousData: true,
   });
 };

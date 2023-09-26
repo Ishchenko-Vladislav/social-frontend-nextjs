@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/api/instance";
 import { API_URL, POST_ROUTE } from "@/utils/constants";
-import { IPost, IPostShort } from "./post.interface";
+import { IBookmarks, IPost, IPostShort } from "./post.interface";
 
 export const PostService = {
   async getFollowingPosts() {
@@ -32,6 +32,10 @@ export const PostService = {
   },
   async getPostById(postId: string) {
     const response = await axiosInstance.get<IPost>(API_URL + POST_ROUTE.postById + postId);
+    return response.data;
+  },
+  async getBookmarks() {
+    const response = await axiosInstance.get<IBookmarks[]>(API_URL + POST_ROUTE.bookmarks);
     return response.data;
   },
 };
