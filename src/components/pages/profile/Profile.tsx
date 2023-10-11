@@ -24,6 +24,7 @@ export const Profile: FC<Props> = ({ userName }) => {
   const { data, isLoading } = useProfile(userName);
 
   const button = () => {
+    if (!data?.followers) return;
     const isMe = data && data.id === user.id;
     if (isMe) return <span>settings</span>;
     return data?.followers[0] ? "unfollow" : "follow";

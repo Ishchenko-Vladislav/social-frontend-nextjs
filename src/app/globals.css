@@ -469,3 +469,8 @@ body {
 
 .decorate-blue {
 }
+
+em-emoji-picker {
+  width: auto;
+  height: auto;
+}

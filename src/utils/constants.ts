@@ -60,6 +60,11 @@ export const POST_ROUTE = {
   postById: "/post/",
 };
 
+export const COMMENT_ROUTE = {
+  sendComment: "/comment/",
+  likeToComment: (commentId: string) => `/comment/${commentId}/like`,
+};
+
 export const QUERY_KEY = {
   following_posts: "following_posts",
   profile_posts: "my_posts",
@@ -70,4 +75,5 @@ export const QUERY_KEY = {
   followings: "followings",
   bookmarks: "bookmarks",
   post_by_id: "post_by_id",
+  comments: "comments",
 };

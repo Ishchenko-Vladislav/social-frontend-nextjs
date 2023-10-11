@@ -14,6 +14,9 @@ const nextConfig = {
     APP_URL: process.env.APP_URL,
     DEV_MODE: process.env.DEV_MODE,
   },
+  images: {
+    domains: ["res.cloudinary.com"],
+  },
 };
 
 module.exports = withPWA(nextConfig);

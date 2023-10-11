@@ -43,7 +43,7 @@ export const Post: FC<Props> = ({ queryKey, ...post }) => {
   return (
     <div
       onClick={handle}
-      className="p-1 sm:p-2 hover:bg-accent/20 flex items-start gap-3 cursor-pointer border-b border-border cursor-pointer"
+      className="py-1 px-3 sm:py-2 hover:bg-accent/20 flex items-start gap-3 cursor-pointer border-b border-border "
     >
       {/* <UserHover following={!!post.user.followers} user={post.user}>
         <Link href={"/" + post.user.userName} className="p-1 block">

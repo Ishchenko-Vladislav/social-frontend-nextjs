@@ -17,7 +17,8 @@ import {
 import { Customize } from "../customize/Customize";
 import { useTheme } from "next-themes";
 import { LuPaintbrush } from "react-icons/lu";
-import { AvatarIcon } from "@/components/ui/avatar/Avatar";
+import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
+import { useAuth } from "@/context/auth/Authorization";
 
 interface Props {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -28,6 +29,7 @@ export const Menu: FC<Props> = ({ setIsOpen, setIsOpenCustomize }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const { data, isLoading, error } = useOwnProfile();
+  const { user } = useAuth();
 
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target !== ref.current) setIsOpen(false);
@@ -68,8 +70,10 @@ export const Menu: FC<Props> = ({ setIsOpen, setIsOpenCustomize }) => {
       >
         <header className="px-4">
           <div>
-            <Link onClick={() => setIsOpen(false)} href={"/profile"}>
-              <AvatarIcon onClick={() => setIsOpen(true)} avatarPath={data?.avatarPath} />
+            {/* <AvatarIcon  user={data} /> */}
+            <Link onClick={() => setIsOpen(false)} href={"/" + data?.userName}>
+              <AvatarIconPrototype avatarPath={data?.avatarPath} />
+              {/* <AvatarIcon onClick={() => setIsOpen(true)} avatarPath={data?.avatarPath} /> */}
               {/* <Avatar onClick={() => setIsOpen(true)} className="w-8 h-8 shrink-0 border-0">
                 <AvatarImage src={data?.avatarPath || ""} />
                 <AvatarFallback className="dark:bg-muted-foreground bg-muted-foreground">

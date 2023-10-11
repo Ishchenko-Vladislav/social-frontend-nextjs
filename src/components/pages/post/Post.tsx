@@ -9,6 +9,7 @@ import { QUERY_KEY } from "@/utils/constants";
 import { useGetPostById } from "@/hooks/post/usePost";
 import { IPost } from "@/services/post/post.interface";
 import { CreateComment } from "./create-comment/CreateComment";
+import { Comments } from "./comments/Comments";
 
 interface Props {
   params: { postId: string };
@@ -17,16 +18,16 @@ interface Props {
 export const Post: FC<IPost> = (data) => {
   return (
     <div className="flex flex-col gap-3 py-2">
-      <div className="flex items-center gap-3 px-4 ">
+      <div className="flex items-center gap-3 px-3 sm:px-4 ">
         <AvatarIcon isFollowing={false} user={data.user} />
         <div className="leading-4">
           <div className="font-bold">{data?.user.displayName}</div>
           <div className="text-sm">@{data?.user.userName}</div>
         </div>
       </div>
-      <div className="px-4">{data.text}</div>
+      <div className="px-3 sm:px-4">{data.text}</div>
 
-      <div className="px-4 text-sm w-fit hover:underline cursor-pointer">
+      <div className="px-3 sm:px-4 text-sm w-fit hover:underline cursor-pointer">
         <TooltipProvider skipDelayDuration={0} disableHoverableContent>
           <Tooltip>
             <TooltipTrigger className="hover:underline">
@@ -41,7 +42,7 @@ export const Post: FC<IPost> = (data) => {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="flex w-full gap-4 items-center py-1 text-muted-foreground no-link px-4 border-y border-border">
+      <div className="flex w-full gap-4 items-center py-1 text-muted-foreground no-link px-3 sm:px-4 border-y border-border">
         <Comment queryKey={QUERY_KEY.post_by_id} onClick={() => {}} count={data.commentsCount} />
         <Like
           invalidate="data"
@@ -58,7 +59,8 @@ export const Post: FC<IPost> = (data) => {
           isMarked={!!data.bookmarks[0]}
         />
       </div>
-      <CreateComment />
+      <CreateComment postId={data.id} />
+      <Comments postId={data.id} />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import styles from "./Form.module.scss";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { IAxiosErrorData } from "@/hooks/useAuth";
 import { ITokens } from "@/services/auth/auth.interface";
-import { cn } from "@/shadcn/utils";
+import { cn } from "@/utils/utils";
 export interface IField {
   label: string;
   name: string;
