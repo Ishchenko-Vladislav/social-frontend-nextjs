@@ -1,7 +1,7 @@
 "use client";
 import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
 import { useOwnProfile } from "@/hooks/user/useProfile";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, FC, useEffect, useState } from "react";
 import Picker from "@emoji-mart/react";
 import { BsFillEmojiSmileFill } from "react-icons/bs";
 import TextareaAutosize from "react-textarea-autosize";
@@ -15,16 +15,20 @@ import { convertBase64 } from "@/utils/utils";
 import { AiOutlineClose } from "react-icons/ai";
 import { Tooltip } from "@/components/ui/tooltip/Tooltip";
 import { ICommentDto } from "@/services/comment/comment.interface";
+import { useUploadFile } from "@/hooks/useUploadFile";
+import Image from "next/image";
 interface Props {
   postId: string;
 }
-
+//<string | ArrayBuffer | null>
 export const CreateComment: FC<Props> = ({ postId }) => {
   const [focused, setFocused] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [isDisabledButton, setIsDisabledButton] = useState(true);
-  const [attachment, setAttachment] = useState<string | ArrayBuffer | null>("");
+  const [attachment, setAttachment] = useState<any>();
   const [text, setText] = useState("");
+  const { data, progress, status, isErrorLoadingFile, isLoadingFile, reset, uploadFile } =
+    useUploadFile();
   const { data: d, isLoading } = useOwnProfile();
   const { mutate: sendComment } = useSendComment();
   const emojiHandle = (e: any) => {
@@ -41,12 +45,27 @@ export const CreateComment: FC<Props> = ({ postId }) => {
     };
     sendComment(dataForFetchComment);
   };
-  const uploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = (e.target.files && e.target.files[0]) || null;
-    if (!file) return console.log("file not found");
-    const base64 = await convertBase64(file);
-    setAttachment(base64);
+  const fileHandle = async (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    if (!selectedFile) {
+      console.log("selectedFile not found");
+      return;
+    }
+
+    console.log("selectedFile", e.target.files, selectedFile);
+    uploadFile(selectedFile);
+    e.target.value = "";
   };
+  useEffect(() => {
+    console.log("fileHERE ------", data, progress);
+  }, [data]);
+  // const uploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = (e.target.files && e.target.files[0]) || null;
+  //   if (!file) return console.log("file not found");
+  //   const base64 = await convertBase64(file);
+  //   console.log("base64", base64);
+  //   setAttachment(base64);
+  // };
   useEffect(() => {
     if (!attachment && text.length === 0) {
       setIsDisabledButton(true);
@@ -75,7 +94,7 @@ export const CreateComment: FC<Props> = ({ postId }) => {
               placeholder="Post your reply"
               className="w-full resize-none p-1 outline-none"
             />
-            {attachment
+            {/* {attachment
               ? typeof attachment == "string" && (
                   <div className="w-full h-fit rounded-2xl overflow-hidden relative">
                     <div className="absolute top-1 right-1">
@@ -88,10 +107,47 @@ export const CreateComment: FC<Props> = ({ postId }) => {
                         </div>
                       </Tooltip>
                     </div>
-                    <img className="object-contain" src={attachment} alt="attachment" />
+                    <video src="">
+                      <source src={attachment}></source>
+                    </video>
                   </div>
                 )
-              : null}
+              : null} */}
+            {isLoadingFile ? (
+              <div className="w-full rounded-xl bg-gray-400 aspect-video"></div>
+            ) : null}
+            {data ? (
+              <div className="w-full rounded-xl overflow-hidden relative ">
+                <div className="absolute top-1 right-1 z-10">
+                  <Tooltip show={"remove"}>
+                    <div
+                      onClick={reset}
+                      className="p-2 rounded-full  bg-black text-white cursor-pointer hover:bg-black/60 "
+                    >
+                      <AiOutlineClose />
+                    </div>
+                  </Tooltip>
+                </div>
+                {data.data.resource_type === "image" ? (
+                  <Image
+                    className="w-full object-contain"
+                    src={data.data.secure_url}
+                    height={data.data.height}
+                    width={data.data.width}
+                    alt="signature"
+                  />
+                ) : data.data.resource_type === "video" ? (
+                  <video muted autoPlay loop className="h-full w-full max-h-96">
+                    <source
+                      className="w-full h-full"
+                      // width={data.data.width}
+                      // height={data.data.height}
+                      src={data.data.url}
+                    />
+                  </video>
+                ) : null}
+              </div>
+            ) : null}
             {/* <input
               // onFocus={() => setFocused(true)}
               placeholder="Post your reply"
@@ -124,17 +180,19 @@ export const CreateComment: FC<Props> = ({ postId }) => {
               </div>
               <div>
                 <input
-                  onChange={(e) => uploadFile(e)}
-                  className="hidden"
+                  onChange={fileHandle}
+                  className="hidden peer"
                   type="file"
                   name="attachment"
                   id="attachment"
+                  disabled={!!data || isLoadingFile}
                 />
+
                 <label
-                  className="hover:bg-accent p-2 rounded-full transition-colors block cursor-pointer"
+                  className="hover:bg-accent text-primary peer-disabled:text-primary/60 p-2 rounded-full transition-colors block cursor-pointer peer-disabled:cursor-default peer-disabled:hover:bg-transparent"
                   htmlFor="attachment"
                 >
-                  <PiImageBold className="text-primary" />
+                  <PiImageBold className="" />
                 </label>
               </div>
             </div>

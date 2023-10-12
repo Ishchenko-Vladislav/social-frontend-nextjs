@@ -28,7 +28,7 @@ export const Comment: FC<IComment> = ({
         </Link>
       </UserHover> */}
       <AvatarIcon isFollowing={!!user.followers} user={user} />
-      <div className="w-full">
+      <div className="w-full flex flex-col gap-1">
         <div className="flex items-center gap-x-2 flex-wrap leading-4 overflow-hidden">
           <UserHover following={!!user.followers} user={user}>
             <Link href={"/" + user.userName} className="font-medium hover:underline">
@@ -42,11 +42,11 @@ export const Comment: FC<IComment> = ({
         </div>
         <div className="text-sm">{text ? text : null}</div>
         {attachment ? (
-          <div className="w-full">
+          <div className="w-full rounded-2xl overflow-hidden">
             <Image
               className="w-full h-auto object-contain"
-              width={200}
-              height={200}
+              width={2000}
+              height={2000}
               src={attachment}
               alt="image"
             />

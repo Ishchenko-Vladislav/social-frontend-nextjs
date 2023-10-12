@@ -38,4 +38,8 @@ export const PostService = {
     const response = await axiosInstance.get<IBookmarks[]>(API_URL + POST_ROUTE.bookmarks);
     return response.data;
   },
+  async addComment() {
+    const response = await axiosInstance.get<IBookmarks[]>(API_URL + POST_ROUTE.bookmarks);
+    return response.data;
+  },
 };
