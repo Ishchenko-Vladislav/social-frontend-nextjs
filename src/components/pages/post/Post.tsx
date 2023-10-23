@@ -25,7 +25,7 @@ export const Post: FC<IPost> = (data) => {
           <div className="text-sm">@{data?.user.userName}</div>
         </div>
       </div>
-      <div className="px-3 sm:px-4">{data.text}</div>
+      <div className="px-3 sm:px-4 whitespace-pre-wrap">{data.text}</div>
 
       <div className="px-3 sm:px-4 text-sm w-fit hover:underline cursor-pointer">
         <TooltipProvider skipDelayDuration={0} disableHoverableContent>

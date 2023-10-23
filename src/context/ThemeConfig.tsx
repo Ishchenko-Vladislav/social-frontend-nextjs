@@ -1,3 +1,4 @@
+"use client";
 import {
   Dispatch,
   ReactNode,
@@ -6,7 +7,6 @@ import {
   useContext,
   useEffect,
   useState,
-  useLayoutEffect,
 } from "react";
 interface IThemeConfig {
   config: Config;
@@ -19,14 +19,25 @@ export type ThemesT = "slate" | "red" | "rose" | "orange" | "green" | "blue" | "
 
 const ThemeConfig = createContext({} as IThemeConfig);
 
-export const useConfig = () => useContext(ThemeConfig);
+export const useConfig = () => {
+  const context = useContext(ThemeConfig);
+  if (context === undefined) {
+    throw new Error("useConfig must be used within a ConfigProvider");
+  }
+  return context;
+};
 
 export const ThemeConfigProvider = ({ children }: { children: ReactNode }) => {
-  const [config, setConfig] = useState<Config>({ theme: "slate" });
-  useLayoutEffect(() => {
+  const [config, setConfig] = useState<Config>(() => {
+    // console.log("window", window);
+    if (typeof localStorage == "undefined") return { theme: "slate" };
     const config = JSON.parse((localStorage && localStorage.getItem("config")) || "{}");
-    if (config && config.theme) setConfig(config);
-  }, []);
+    if (config) {
+      return config;
+    } else {
+      return { theme: "slate" };
+    }
+  });
 
   useEffect(() => {
     localStorage.setItem("config", JSON.stringify(config));

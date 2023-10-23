@@ -77,3 +77,6 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+// axios.defaults. = {
+//   throttle: 0, // Отключить задержку
+// };

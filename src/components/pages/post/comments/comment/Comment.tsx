@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FC } from "react";
 import { Like } from "./like/Like";
 import Image from "next/image";
+import { cn } from "@/utils/utils";
 
 interface Props {}
 
@@ -40,18 +41,39 @@ export const Comment: FC<IComment> = ({
             <TimePost createdAt={createdAt} />
           </div>
         </div>
-        <div className="text-sm">{text ? text : null}</div>
-        {attachment ? (
-          <div className="w-full rounded-2xl overflow-hidden">
-            <Image
-              className="w-full h-auto object-contain"
-              width={2000}
-              height={2000}
-              src={attachment}
-              alt="image"
-            />
-          </div>
-        ) : null}
+        <div className="text-sm whitespace-pre-wrap">{text ? text : null}</div>
+        {attachment && !!attachment.length
+          ? attachment.map((attach) => {
+              return (
+                <div key={attach.id} className="w-full  overflow-hidden">
+                  {attach.resourceType === "image" ? (
+                    <div className={cn(" w-full relative overflow-hidden")}>
+                      <Image
+                        className={cn(
+                          "max-w-full max-h-[500px] w-fit h-auto rounded-2xl object-contain"
+                        )}
+                        width={attach.image?.width ?? 2000}
+                        height={attach.image?.height ?? 2000}
+                        src={attach.secureUrl ?? attach.url ?? ""}
+                        alt="image"
+                      />
+                    </div>
+                  ) : attach.resourceType === "video" ? (
+                    <video
+                      controls
+                      muted
+                      autoPlay
+                      loop
+                      className="object-contain w-full aspect-square bg-black rounded-2xl h-full"
+                    >
+                      <source className="object-contain" src={attach.url} />
+                      <source className="object-contain" src={attach.secureUrl} />
+                    </video>
+                  ) : null}
+                </div>
+              );
+            })
+          : null}
 
         <div className="flex w-full gap-4 items-center pt-1 text-muted-foreground">
           <Like

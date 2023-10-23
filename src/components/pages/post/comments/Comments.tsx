@@ -15,6 +15,7 @@ export const Comments: FC<Props> = ({ postId }) => {
   if (isError) {
     return <div>error</div>;
   }
+  console.log("comments", data);
   return (
     <div className="w-full flex flex-col">
       {!!data.length ? (

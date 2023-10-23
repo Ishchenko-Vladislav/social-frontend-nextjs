@@ -77,3 +77,10 @@ export const QUERY_KEY = {
   post_by_id: "post_by_id",
   comments: "comments",
 };
+
+export const CloudinaryUrl = {
+  upload: (resource_type: string) =>
+    `https://api.cloudinary.com/v1_1/daswkls85/${resource_type}/upload`,
+  destroy: (resource_type: string) =>
+    `https://api.cloudinary.com/v1_1/daswkls85/${resource_type}/destroy`,
+};

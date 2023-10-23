@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { IAxiosErrorData } from "../useAuth";
 import { AxiosError } from "axios";
 import { QUERY_KEY } from "@/utils/constants";
+
 export const useSendComment = () => {
   const queryClient = useQueryClient();
 

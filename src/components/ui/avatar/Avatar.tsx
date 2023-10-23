@@ -54,7 +54,7 @@ export const UserHover: FC<PropsWithChildren<IUserHoverProps>> = ({
   if (!user) return null;
   return (
     <HoverCard>
-      <HoverCardTrigger>{children}</HoverCardTrigger>
+      <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent>
         <div className="flex justify-between items-start">
           <Link href={"/" + user.userName}>

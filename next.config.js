@@ -13,6 +13,7 @@ const nextConfig = {
     SERVER_URL: process.env.SERVER_URL,
     APP_URL: process.env.APP_URL,
     DEV_MODE: process.env.DEV_MODE,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
   },
   images: {
     domains: ["res.cloudinary.com"],

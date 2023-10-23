@@ -474,3 +474,7 @@ em-emoji-picker {
   width: auto;
   height: auto;
 }
+
+a > a {
+  font-size: 200px;
+}

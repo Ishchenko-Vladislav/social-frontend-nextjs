@@ -17,6 +17,9 @@ import { Tooltip } from "@/components/ui/tooltip/Tooltip";
 import { ICommentDto } from "@/services/comment/comment.interface";
 import { useUploadFile } from "@/hooks/useUploadFile";
 import Image from "next/image";
+import { Skeleton } from "@/shadcn/ui/skeleton";
+import { CloudinaryFile } from "@/services/file/file.interface";
+import { usePreviewFile } from "@/hooks/usePreviewFile";
 interface Props {
   postId: string;
 }
@@ -25,14 +28,16 @@ export const CreateComment: FC<Props> = ({ postId }) => {
   const [focused, setFocused] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [isDisabledButton, setIsDisabledButton] = useState(true);
-  const [attachment, setAttachment] = useState<any>();
+  // const [attachment, setAttachment] = useState<CloudinaryFile[]>([]);
   const [text, setText] = useState("");
-  const { data, progress, status, isErrorLoadingFile, isLoadingFile, reset, uploadFile } =
-    useUploadFile();
+  // const { attachments, progress, status, isErrorLoadingFile, isLoadingFile, remove, uploadFile } =
+  //   useUploadFile();
+  const { attachments, acceptFiles, attachmentsPreview, countToRender, remove, uploadFile } =
+    usePreviewFile();
   const { data: d, isLoading } = useOwnProfile();
   const { mutate: sendComment } = useSendComment();
   const emojiHandle = (e: any) => {
-    console.log(e);
+    // console.log(e);
     setText((prev) => prev + e.native);
   };
   const handleSendComment = () => {
@@ -40,41 +45,14 @@ export const CreateComment: FC<Props> = ({ postId }) => {
       comment: ICommentDto;
       postId: string;
     } = {
-      comment: { text: text, attachment: attachment },
+      comment: {
+        text: text,
+        // attachment: attachments && attachments.length > 0 ? attachments : null,
+      },
       postId,
     };
     sendComment(dataForFetchComment);
   };
-  const fileHandle = async (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files ? e.target.files[0] : null;
-    if (!selectedFile) {
-      console.log("selectedFile not found");
-      return;
-    }
-
-    console.log("selectedFile", e.target.files, selectedFile);
-    uploadFile(selectedFile);
-    e.target.value = "";
-  };
-  useEffect(() => {
-    console.log("fileHERE ------", data, progress);
-  }, [data]);
-  // const uploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
-  //   const file = (e.target.files && e.target.files[0]) || null;
-  //   if (!file) return console.log("file not found");
-  //   const base64 = await convertBase64(file);
-  //   console.log("base64", base64);
-  //   setAttachment(base64);
-  // };
-  useEffect(() => {
-    if (!attachment && text.length === 0) {
-      setIsDisabledButton(true);
-    } else {
-      setIsDisabledButton(false);
-    }
-
-    return () => {};
-  }, [attachment, text]);
 
   return (
     <div className="py-2 border-b border-border">
@@ -88,72 +66,132 @@ export const CreateComment: FC<Props> = ({ postId }) => {
         >
           <div className="flex-1 flex-col">
             <TextareaAutosize
-              onChange={(e) => setText(e.target.value)}
+              onChange={(e) => {
+                setText(e.target.value);
+              }}
               value={text}
               onFocus={() => setFocused(true)}
               placeholder="Post your reply"
               className="w-full resize-none p-1 outline-none"
             />
-            {/* {attachment
-              ? typeof attachment == "string" && (
-                  <div className="w-full h-fit rounded-2xl overflow-hidden relative">
-                    <div className="absolute top-1 right-1">
-                      <Tooltip show={"remove"}>
+            <div
+              className={cn("grid gap-1 sm:gap-3", {
+                ["grid-cols-1"]: countToRender === 1,
+                ["grid-cols-2 aspect-video  "]: countToRender >= 2,
+                ["grid-rows-2"]: countToRender >= 3,
+              })}
+            >
+              {attachments && !!attachments.length
+                ? attachments.map((el, index) => (
+                    <div
+                      key={el.public_id}
+                      className={cn("w-full", {
+                        ["row-span-2"]: countToRender == 3 && index == 0,
+                      })}
+                    >
+                      {el.resource_type === "image" ? (
                         <div
-                          onClick={() => setAttachment("")}
-                          className="p-2 rounded-full  bg-black text-white cursor-pointer hover:bg-black/60 "
+                          className={cn("relative w-fit", {
+                            ["w-full h-full"]: countToRender >= 2,
+                          })}
                         >
-                          <AiOutlineClose />
+                          <div className="absolute top-1 right-1 z-10">
+                            <Tooltip show={"remove"}>
+                              <div
+                                onClick={() => remove(el)}
+                                className="p-2 rounded-full  bg-black text-white cursor-pointer hover:bg-black/60 "
+                              >
+                                <AiOutlineClose />
+                              </div>
+                            </Tooltip>
+                          </div>
+                          <Image
+                            className={cn("max-w-full  h-auto rounded-2xl ", {
+                              ["max-h-[500px] object-contain w-fit"]: countToRender == 1,
+                              ["w-full h-full object-cover"]: countToRender >= 2,
+                            })}
+                            width={el.width ?? 2000}
+                            height={el.height ?? 2000}
+                            src={el.secure_url ?? el.url ?? ""}
+                            alt="image"
+                          />
                         </div>
-                      </Tooltip>
+                      ) : el.resource_type === "video" ? (
+                        <video
+                          controls
+                          muted
+                          autoPlay
+                          loop
+                          className="object-contain w-full aspect-square bg-black rounded-2xl h-full"
+                        >
+                          <source className="object-contain" src={el.url} />
+                          <source className="object-contain" src={el.secure_url} />
+                        </video>
+                      ) : null}
                     </div>
-                    <video src="">
-                      <source src={attachment}></source>
-                    </video>
-                  </div>
-                )
-              : null} */}
-            {isLoadingFile ? (
-              <div className="w-full rounded-xl bg-gray-400 aspect-video"></div>
+                  ))
+                : null}
+              {attachmentsPreview.map((el, index) => (
+                // <div className="w-10 h-10 bg-red-500"></div>
+                <Skeleton
+                  key={index}
+                  className={cn("min-h-[20px] object-contain w-full bg-gray-400 rounded-md", {
+                    ["h-[450px]"]: countToRender === 1,
+                    ["h-full"]: countToRender > 1,
+                  })}
+                ></Skeleton>
+              ))}
+            </div>
+            {/* {isLoadingFile ? (
+              <Skeleton className="w-full rounded-xl bg-gray-400 aspect-video"></Skeleton>
             ) : null}
-            {data ? (
-              <div className="w-full rounded-xl overflow-hidden relative ">
+            {attachments && attachments.length > 0 ? (
+              <div className="w-full rounded-xl overflow-hidden relative aspect-square">
                 <div className="absolute top-1 right-1 z-10">
                   <Tooltip show={"remove"}>
                     <div
-                      onClick={reset}
+                      onClick={() => remove(attachments[0].public_id)}
                       className="p-2 rounded-full  bg-black text-white cursor-pointer hover:bg-black/60 "
                     >
                       <AiOutlineClose />
                     </div>
                   </Tooltip>
                 </div>
-                {data.data.resource_type === "image" ? (
+                {attachments[0].resource_type === "image" ? (
                   <Image
                     className="w-full object-contain"
-                    src={data.data.secure_url}
-                    height={data.data.height}
-                    width={data.data.width}
+                    src={attachments[0].secure_url}
+                    height={attachments[0].height}
+                    width={attachments[0].width}
                     alt="signature"
                   />
-                ) : data.data.resource_type === "video" ? (
-                  <video muted autoPlay loop className="h-full w-full max-h-96">
-                    <source
-                      className="w-full h-full"
-                      // width={data.data.width}
-                      // height={data.data.height}
-                      src={data.data.url}
-                    />
+                ) : attachments[0].resource_type === "video" ? (
+                  <video
+                    controls
+                    muted
+                    autoPlay
+                    loop
+                    className="object-contain w-full aspect-square bg-black rounded-2xl h-full"
+                  >
+                    <source className="object-contain" src={attachments[0].url} />
+                    <source className="object-contain" src={attachments[0].secure_url} />
                   </video>
-                ) : null}
+                ) : 
+                null}
               </div>
-            ) : null}
-            {/* <input
-              // onFocus={() => setFocused(true)}
-              placeholder="Post your reply"
-              type="text"
-              className="flex-1 outline-none w-full p-1"
-            /> */}
+            ) : null} */}
+            {/* {isLoadingFile || attachments.length > 0 ? (
+              <div className="p-4 rounded-xl bg-[#F5F3FF] mt-2">
+                <div>{isLoadingFile ? <span>Uploading</span> : <span>Uploaded</span>}</div>
+                <div>{progress}%</div>
+                <div>
+                  <p className="text-muted-foreground text-sm">
+                    It will take a while to upload long videos. Make sure to keep your browser tab
+                    open to avoid upload interruptions.
+                  </p>
+                </div>
+              </div>
+            ) : null} */}
           </div>
           <div
             className={cn("flex ", {
@@ -180,12 +218,15 @@ export const CreateComment: FC<Props> = ({ postId }) => {
               </div>
               <div>
                 <input
-                  onChange={fileHandle}
+                  onChange={uploadFile}
                   className="hidden peer"
                   type="file"
                   name="attachment"
                   id="attachment"
-                  disabled={!!data || isLoadingFile}
+                  multiple
+                  // accept="image/*, video/*"
+                  accept={acceptFiles}
+                  // disabled={!!attachments[0] || isLoadingFile}
                 />
 
                 <label
