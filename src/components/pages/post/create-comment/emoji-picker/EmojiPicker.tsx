@@ -4,12 +4,14 @@ import { FC, useEffect, useState } from "react";
 import data from "@emoji-mart/data";
 // import { EmojiPicker } from "./emoji-picker/EmojiPicker";
 import Picker from "@emoji-mart/react";
+import { cn } from "@/utils/utils";
 interface Props {
   close: () => void;
   selectedEmoji: (e: any) => void;
+  className?: string;
 }
 
-export const EmojiPicker: FC<Props> = ({ close, selectedEmoji }) => {
+export const EmojiPicker: FC<Props> = ({ close, selectedEmoji, className }) => {
   const { width } = useWindowSize();
   const [mounted, setMounted] = useState(false);
   const [options, setOptions] = useState({});
@@ -27,7 +29,12 @@ export const EmojiPicker: FC<Props> = ({ close, selectedEmoji }) => {
   }, []);
 
   return (
-    <div className="absolute -left-10 top-10 w-[300px] sm:w-[400px] border z-10 rounded-xl h-[300px] overflow-hidden">
+    <div
+      className={cn(
+        "absolute -left-10 top-10 w-[300px] sm:w-[400px] border z-10 rounded-xl h-[300px] overflow-hidden",
+        className
+      )}
+    >
       {mounted ? (
         <Picker
           //   className="max-w-[250px] w-full"

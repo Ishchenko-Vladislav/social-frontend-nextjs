@@ -24,7 +24,7 @@
 }
 
 .searchBlock {
-  @apply absolute top-14 w-full border border-border rounded-md  flex-col;
+  @apply absolute top-14 w-full border border-border rounded-md  flex-col bg-white;
   // flex-col max-h-[80%] h-fit;
 }
 .searchBlock[data-open="false"] {

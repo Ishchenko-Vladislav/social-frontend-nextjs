@@ -456,6 +456,18 @@ html {
   }
 }
 
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -467,14 +479,11 @@ body {
   @apply overflow-y-scroll;
 }
 
-.decorate-blue {
-}
-
 em-emoji-picker {
-  width: auto;
-  height: auto;
+  /* width: auto;
+  height: auto; */
+  @apply max-h-96 w-auto h-auto;
 }
-
-a > a {
-  font-size: 200px;
-}
+/* em-emoji-picker > section {
+  height: 100%;
+} */

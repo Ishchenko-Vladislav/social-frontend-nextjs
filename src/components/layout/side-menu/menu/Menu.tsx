@@ -88,8 +88,8 @@ export const Menu: FC<Props> = ({ setIsOpen, setIsOpenCustomize }) => {
             <div className="text-muted-foreground leading-tight">{data?.userName}</div>
           </div>
           <div className="flex gap-5 py-3 text-sm">
-            <div>{data?.following || 0} following</div>
-            <div>{data?.followers || 0} followers</div>
+            <div>{data?.followingCount || 0} following</div>
+            <div>{data?.followersCount || 0} followers</div>
           </div>
         </header>
         <div className="text-foreground flex flex-col py-4 border-y border-border">

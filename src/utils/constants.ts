@@ -49,6 +49,7 @@ export const USER_ROUTE = {
   status: "/user/status/subscription/",
   followers: "/user/followers/",
   following: "/user/following/",
+  follow: "/user/subscribe/",
 };
 export const POST_ROUTE = {
   followingPosts: "/post/my/following/posts",
@@ -58,11 +59,20 @@ export const POST_ROUTE = {
   profilePosts: "/post/profile/posts",
   profilePostsWithLikes: "/post/profile/posts/likes",
   postById: "/post/",
+  createPost: "/post/create",
 };
 
 export const COMMENT_ROUTE = {
   sendComment: "/comment/",
   likeToComment: (commentId: string) => `/comment/${commentId}/like`,
+};
+
+export const CONVERSATION_ROUTE = {
+  getConversation: "/conversation/me",
+  getConversationById: "/conversation/",
+  createConversation: "/conversation/create/",
+  getMessages: "/conversation/message/",
+  sendMessage: "/conversation/message/send/",
 };
 
 export const QUERY_KEY = {
@@ -76,6 +86,9 @@ export const QUERY_KEY = {
   bookmarks: "bookmarks",
   post_by_id: "post_by_id",
   comments: "comments",
+  conversation: "conversation",
+  conversation_by_id: "conversation_by_id",
+  messages: "messages",
 };
 
 export const CloudinaryUrl = {

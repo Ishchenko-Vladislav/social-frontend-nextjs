@@ -1,12 +1,14 @@
-import { FC, HTMLAttributes, MouseEvent } from "react";
+import { FC, HTMLAttributes, MouseEvent, useState } from "react";
 import cn from "classnames";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostService } from "@/services/post/post.service";
 import { IPost } from "@/services/post/post.interface";
 import { TooltipForPost } from "../tooltip/TooltipForPost";
+import { IPagination } from "@/utils/types";
+import { BookmarkUI } from "../../buttons/BookmarkUI";
 type IInvalidate = "cache" | "data";
-interface Props extends HTMLAttributes<HTMLDivElement> {
+interface Props {
   id: string;
   count: number;
   isMarked: boolean;
@@ -14,70 +16,31 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   invalidate?: IInvalidate;
 }
 
-export const Bookmark: FC<Props> = ({
-  id,
-  count,
-  isMarked,
-  queryKey,
-  invalidate = "cache",
-  ...attr
-}) => {
+export const Bookmark: FC<Props> = ({ id, count, isMarked, queryKey }) => {
   const queryClient = useQueryClient();
 
-  const { mutate: bookmark } = useMutation({
+  const { mutate: bookmark, isPending } = useMutation({
     mutationFn: (id: string) => PostService.bookmark(id),
     onSuccess: (updatedPost, variables, context) => {
-      if (invalidate === "cache") {
-        queryClient.setQueriesData<IPost[]>([queryKey], (oldData) => {
-          if (!oldData) return;
-          const updateData = oldData.map((el) => {
-            if (el.id === updatedPost.id) {
-              return {
-                ...el,
-                bookmarks: updatedPost.bookmarks,
-                bookmarksCount: updatedPost.bookmarksCount,
-              };
-            }
-            return el;
-          });
-          return updateData;
-        });
-      } else if (invalidate === "data") {
-        queryClient.invalidateQueries([queryKey]);
-      }
+      queryClient.setQueryData([queryKey], (data: IPagination<IPost>) => {
+        return {
+          pages: data.pages.map((page) => {
+            return page.map((post) => {
+              if (post.id === updatedPost.id) return updatedPost;
+              else return post;
+            });
+          }),
+          pageParams: data.pageParams,
+        };
+      });
     },
+    onError(error, variables, context) {},
   });
-  const bookmarkHandle = (e: MouseEvent<HTMLDivElement>) => {
+  const bookmarkHandle = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // console.log("bookmarkHandle");
     bookmark(id);
   };
   return (
-    <div
-      onClick={bookmarkHandle}
-      {...attr}
-      className={cn("flex cursor-pointer items-center group w-20 ml-auto")}
-    >
-      <TooltipForPost show={isMarked ? "Unbookmark" : "Bookmark"}>
-        <div className={cn(`rounded-full p-2 group-hover:bg-blue-500/20 transition-colors`)}>
-          {isMarked ? (
-            <div>
-              <FaBookmark className={cn(`text-blue-500 sm:text-lg text-sm`)} />
-            </div>
-          ) : (
-            <div>
-              <FaRegBookmark className={cn(`sm:text-lg text-sm group-hover:text-blue-500`)} />
-            </div>
-          )}
-        </div>
-      </TooltipForPost>
-      <span
-        className={cn(`text-sm group-hover:text-blue-500 select-none`, {
-          ["text-blue-500"]: isMarked,
-        })}
-      >
-        {count}
-      </span>
-    </div>
+    <BookmarkUI count={count} isMarked={isMarked} onClick={bookmarkHandle} isLoading={isPending} />
   );
 };

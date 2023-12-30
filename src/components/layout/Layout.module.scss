@@ -3,7 +3,7 @@
   .main {
     @apply flex-1 max-w-2xl h-fit
     pb-16 mobile:pb-0 
-    border-x min-h-screen 
-    border-border;
+    min-h-screen 
+    border-border border-r;
   }
 }

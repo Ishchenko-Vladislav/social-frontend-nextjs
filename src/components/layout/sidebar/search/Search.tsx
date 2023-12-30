@@ -26,7 +26,9 @@ interface Props {}
 export const Search: FC<Props> = () => {
   const [searchTerms, setSearchTerms] = useState<string>("");
   const debouncedValue = useDebounce(searchTerms, 500);
-  const { data, isError, isLoading } = useSearch(debouncedValue);
+  const { data, isError, isLoading } = useSearch<IUser[] | ITag[]>({
+    searchTerm: debouncedValue,
+  });
   const [isOpen, setIsOpen] = useState(false);
 
   const onFocusHandler = (e: FocusEvent<HTMLDivElement>) => {

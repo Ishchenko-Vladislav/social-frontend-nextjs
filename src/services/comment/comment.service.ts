@@ -10,9 +10,14 @@ export const CommentService = {
     );
     return response.data;
   },
-  async getComments(postId: string) {
+  async getComments(postId: string, pageParam: number) {
     const response = await axiosInstance.get<IComment[]>(
-      API_URL + COMMENT_ROUTE.sendComment + postId
+      API_URL + COMMENT_ROUTE.sendComment + postId,
+      {
+        params: {
+          pageParam,
+        },
+      }
     );
     return response.data;
   },

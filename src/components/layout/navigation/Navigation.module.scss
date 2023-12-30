@@ -7,11 +7,14 @@
   bg-background
   text-foreground
   overflow-y-auto
+  border-0
+  shrink-0
+  border-border
   mobile:sticky bottom-0
   mobile:top-0
   mobile:min-h-screen
   mobile:flex-col
-  mobile:border-none
+  mobile:border-r
   mobile:w-16
   mobile:bg-background
   mobile:max-h-screen;

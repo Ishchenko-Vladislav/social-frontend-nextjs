@@ -97,7 +97,10 @@ export const usePreviewFile = () => {
   const beforeUnload = () => {
     attachRef.current.map((el: any) => fileService.deleteFile(el.public_id));
   };
-  const remove = async (obj: CloudinaryResponse) => {
+  const remove = async (obj: CloudinaryResponse | "all") => {
+    if (obj === "all") {
+      return setAttachments([]);
+    }
     const res = fileService.deleteFile(obj.public_id);
     setAttachments((prev) => {
       return prev.filter((el) => el.public_id !== obj.public_id);

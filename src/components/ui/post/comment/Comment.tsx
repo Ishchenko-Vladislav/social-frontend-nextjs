@@ -9,7 +9,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 export const Comment: FC<Props> = ({ queryKey, count, ...attr }) => {
   return (
-    <div {...attr} className={cn("flex cursor-pointer items-center group w-20 -ml-2")}>
+    <div {...attr} className={cn("flex cursor-pointer items-center w-fit group px-2 -ml-4")}>
       <TooltipForPost show="Reply">
         <div className={cn(`rounded-full p-2 group-hover:bg-blue-500/20 transition-colors`)}>
           <div className="flex justify-center items-center">

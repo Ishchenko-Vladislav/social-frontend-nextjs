@@ -3,7 +3,7 @@ import { TimePost } from "@/components/ui/post/time-post/TimePost";
 import { IComment } from "@/services/comment/comment.interface";
 import Link from "next/link";
 // import { AvatarIcon } from '@radix-ui/react-icons';
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Like } from "./like/Like";
 import Image from "next/image";
 import { cn } from "@/utils/utils";
@@ -19,11 +19,20 @@ export const Comment: FC<IComment> = ({
   likes = [],
   attachment,
 }) => {
+  const followHandle = () => {
+    return {};
+  };
+
+  // useEffect(() => {
+  //   console.log("mount component");
+
+  //   return () => {
+  //     console.log("deleted component");
+  //   };
+  // }, []);
+
   return (
-    <div
-      //   onClick={handle}
-      className="py-1 sm:py-2 px-3 sm:px-4 hover:bg-accent/20 flex items-start gap-3  border-b border-border "
-    >
+    <div className="py-1 sm:py-2 px-3 sm:px-4 hover:bg-accent/20 flex items-start gap-3  border-b border-border ">
       {/* <UserHover following={!!post.user.followers} user={post.user}>
         <Link href={"/" + post.user.userName} className="p-1 block">
         </Link>
@@ -41,39 +50,66 @@ export const Comment: FC<IComment> = ({
             <TimePost createdAt={createdAt} />
           </div>
         </div>
-        <div className="text-sm whitespace-pre-wrap">{text ? text : null}</div>
-        {attachment && !!attachment.length
-          ? attachment.map((attach) => {
-              return (
-                <div key={attach.id} className="w-full  overflow-hidden">
-                  {attach.resourceType === "image" ? (
-                    <div className={cn(" w-full relative overflow-hidden")}>
-                      <Image
-                        className={cn(
-                          "max-w-full max-h-[500px] w-fit h-auto rounded-2xl object-contain"
-                        )}
-                        width={attach.image?.width ?? 2000}
-                        height={attach.image?.height ?? 2000}
-                        src={attach.secureUrl ?? attach.url ?? ""}
-                        alt="image"
-                      />
-                    </div>
-                  ) : attach.resourceType === "video" ? (
-                    <video
-                      controls
-                      muted
-                      autoPlay
-                      loop
-                      className="object-contain w-full aspect-square bg-black rounded-2xl h-full"
+        <div className="">
+          <div
+            style={{
+              wordBreak: "break-word",
+            }}
+            className="text-sm whitespace-pre-wrap"
+          >
+            <Highlight str={text ?? ""} />
+          </div>
+          <div
+            className={cn("grid w-full gap-1 sm:gap-3 ", {
+              ["grid-cols-1"]: attachment.length === 1,
+              ["grid-cols-2 aspect-video"]: attachment.length >= 2,
+              ["grid-rows-2"]: attachment.length >= 3,
+            })}
+          >
+            {attachment && !!attachment.length
+              ? attachment.map((attach, index) => {
+                  return (
+                    <div
+                      key={attach.id}
+                      className={cn("w-full overflow-hidden", {
+                        ["row-span-2"]: attachment.length == 3 && index == 0,
+                      })}
                     >
-                      <source className="object-contain" src={attach.url} />
-                      <source className="object-contain" src={attach.secureUrl} />
-                    </video>
-                  ) : null}
-                </div>
-              );
-            })
-          : null}
+                      {attach.resourceType === "image" ? (
+                        <div
+                          className={cn(" w-fit relative ", {
+                            ["w-full h-full"]: attachment.length >= 2,
+                          })}
+                        >
+                          <Image
+                            className={cn("max-w-full  h-auto rounded-2xl ", {
+                              ["max-h-[500px] object-contain w-fit"]: attachment.length === 1,
+                              ["w-full h-full object-cover"]: attachment.length >= 2,
+                            })}
+                            width={attach.image?.width ?? 2000}
+                            height={attach.image?.height ?? 2000}
+                            src={attach.secureUrl ?? attach.url ?? ""}
+                            alt="image"
+                          />
+                        </div>
+                      ) : attach.resourceType === "video" ? (
+                        <video
+                          controls
+                          muted
+                          autoPlay
+                          loop
+                          className="object-contain w-full aspect-square bg-black rounded-2xl h-full"
+                        >
+                          <source className="object-contain" src={attach.url} />
+                          <source className="object-contain" src={attach.secureUrl} />
+                        </video>
+                      ) : null}
+                    </div>
+                  );
+                })
+              : null}
+          </div>
+        </div>
 
         <div className="flex w-full gap-4 items-center pt-1 text-muted-foreground">
           <Like
@@ -82,6 +118,7 @@ export const Comment: FC<IComment> = ({
             count={likesCount}
             isLiked={!!likes[0] || false}
             // isLiked={false}
+            // indexPage={indexPage}
           />
           {/* <Comment queryKey={queryKey} onClick={commentHandle} count={post.commentsCount} />
           <Like
@@ -100,4 +137,62 @@ export const Comment: FC<IComment> = ({
       </div>
     </div>
   );
+};
+type THighlightProps = {
+  str: string;
+};
+const parser = (str: string) => {
+  const tokens: string[] = [];
+  let currentIndex = 0;
+  let nextLine = false;
+  str.split("").map((el) => {
+    if (el === " " || el === "\n") nextLine = true;
+    if (nextLine && !/[\s\n]/.test(el)) {
+      currentIndex++;
+      nextLine = false;
+    }
+    if (tokens[currentIndex]) tokens[currentIndex] += el;
+    else tokens[currentIndex] = "" + el;
+  });
+  const t = tokens.map((el) => {
+    if (
+      el.includes("@") &&
+      !el.includes("#") &&
+      el.indexOf("@") === el.lastIndexOf("@") &&
+      el.startsWith("@") &&
+      el.replace(/[ \n]/g, "").length > 1
+    ) {
+      return <span className="text-primary">{el}</span>;
+    } else if (
+      el.includes("#") &&
+      !el.includes("@") &&
+      el.indexOf("#") === el.lastIndexOf("#") &&
+      el.startsWith("#") &&
+      el.replace(/[ \n]/g, "").length > 1
+    ) {
+      return <span className="text-primary underline">{el}</span>;
+    } else {
+      return el;
+    }
+  });
+  // console.log("parser tokens", tokens);
+  return t;
+};
+export const Highlight: FC<THighlightProps> = ({ str }) => {
+  const t = parser(str);
+  return t;
+  // const mentionRegex = /@[\w]+/g;
+  // const hashtagRegex = /#[\w]+/g;
+  // const ar = str.split(" ").map((el, index, arr) => {
+  //   console.log("el here", el);
+  //   el = index === 0 ? el : " " + el;
+  //   if (el.match(mentionRegex)) {
+  //     return <span className="text-primary">{el}</span>;
+  //   } else if (el.match(hashtagRegex)) {
+  //     return <span className="text-primary">{el}</span>;
+  //   }
+  //   return el;
+  // });
+
+  // return <div className="whitespace-pre-wrap">{ar}</div>;
 };

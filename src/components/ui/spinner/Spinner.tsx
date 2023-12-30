@@ -1,5 +1,6 @@
+import { cn } from "@/utils/utils";
 import { FC } from "react";
-import cn from "classnames";
+// import cn from "classnames";
 interface Props {
   className?: string;
 }

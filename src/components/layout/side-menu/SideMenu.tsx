@@ -45,7 +45,7 @@ export const SideMenu: FC<Props> = () => {
     }
     lastScrollPoint.current = window.scrollY;
   };
-  if (width > 500 || !mounted || !not(pathname)) return null;
+  if (width > 500 || !mounted) return null;
   return (
     <>
       <motion.div

@@ -1,7 +1,7 @@
 "use client";
 import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
 import { HeaderBack } from "@/components/ui/header/HeaderBack";
-import { useOwnProfile, useProfile } from "@/hooks/user/useProfile";
+import { useFollow, useOwnProfile, useProfile } from "@/hooks/user/useProfile";
 import { FC } from "react";
 import styles from "./Profile.module.scss";
 import { BiArrowBack } from "react-icons/bi";
@@ -14,6 +14,10 @@ import cn from "classnames";
 import { Tabs } from "@/components/ui/tabs/Tabs";
 import { tabs } from "./profile.data";
 import { useAuth } from "@/context/auth/Authorization";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UserService } from "@/services/user/user.service";
+import { QUERY_KEY } from "@/utils/constants";
+import { AxiosError } from "axios";
 
 interface Props {
   userName: string;
@@ -22,20 +26,40 @@ interface Props {
 export const Profile: FC<Props> = ({ userName }) => {
   const { user } = useAuth();
   const { data, isLoading } = useProfile(userName);
-
+  // const { mutate, isLoading: isFollowing } = useFollow();
   const button = () => {
     if (!data?.followers) return;
     const isMe = data && data.id === user.id;
     if (isMe) return <span>settings</span>;
     return data?.followers[0] ? "unfollow" : "follow";
   };
+  console.log("HEEEEE", data);
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: async (userId: string) => UserService.follow(userId),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.profile, { userName }] });
+    },
+    onError(error: any, variables, context) {
+      console.log(error);
+      if (error instanceof AxiosError) {
+        const message = error.response?.data.message;
+        if (message) {
+          return error.response?.data.message;
+        } else {
+          error.message;
+        }
+      }
+      return error;
+    },
+  });
   const createdAt = dayjs(data?.createdAt).format("MMMM YYYY").toString();
   // const postsUrl = "/" + userName;
   // const likesUrl = "/" + userName + "/likes";
   const followersUrl = "/" + userName + "/followers";
   const followingsUrl = "/" + userName + "/following";
   return (
-    <div>
+    <div className="">
       <HeaderBack title="Profile" />
       <div className="w-full h-36 sm:h-48 bg-secondary"></div>
       <div className="flex items-end justify-between px-6 -mt-16">
@@ -45,7 +69,10 @@ export const Profile: FC<Props> = ({ userName }) => {
             avatarPath={data?.avatarPath || ""}
           />
         </div>
-        <div className="px-4 py-1.5 text-lg sm:my-4 bg-primary hover:bg-primary/80 transition-colors rounded-full w-fit text-primary-foreground cursor-pointer">
+        <div
+          onClick={() => mutate(data?.id ?? "")}
+          className="px-4 py-1.5 text-lg sm:my-4 bg-primary hover:bg-primary/80 transition-colors rounded-full w-fit text-primary-foreground cursor-pointer"
+        >
           {button()}
         </div>
       </div>

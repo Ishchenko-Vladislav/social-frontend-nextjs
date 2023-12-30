@@ -2,25 +2,27 @@ import { axiosInstance } from "@/api/instance";
 import { IUser } from "@/services/user/user.interface";
 import { API_URL } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
-
-export const useSearch = (searchTerm?: string) => {
+interface ISearchProps {
+  searchTerm?: string;
+  only?: "user" | "tag";
+}
+export const useSearch = <T>({ searchTerm, only }: ISearchProps) => {
   return useQuery({
     queryKey: ["search", { searchTerm }],
-    queryFn: () => req(searchTerm),
-    keepPreviousData: true,
+    queryFn: () => req<T>(searchTerm, only),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    cacheTime: 1000 * 60,
     enabled: !!searchTerm,
   });
 };
 
-const req = async (searchTerm?: string) => {
+const req = async <T>(searchTerm?: string, only: "user" | "tag" | undefined = undefined) => {
   return (
-    await axiosInstance.get<IUser[] | ITag[]>(API_URL + "/search", {
+    await axiosInstance.get<T>(API_URL + "/search", {
       params: {
         searchTerm,
+        only,
       },
     })
   ).data;

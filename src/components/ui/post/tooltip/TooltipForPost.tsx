@@ -9,7 +9,7 @@ export const TooltipForPost: FC<PropsWithChildren<Props>> = ({ children, show })
   return (
     <TooltipProvider disableHoverableContent skipDelayDuration={0} delayDuration={500}>
       <Tooltip>
-        <TooltipTrigger>{children}</TooltipTrigger>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent className="px-1 py-0 text-xs rounded-none" side="bottom">
           {show}
         </TooltipContent>

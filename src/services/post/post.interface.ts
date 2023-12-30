@@ -1,3 +1,4 @@
+import { CloudinaryFile, CloudinaryResponse } from "../file/file.interface";
 import { IUser } from "../user/user.interface";
 
 export interface IPostShort {
@@ -11,6 +12,9 @@ export interface IPostShort {
   likes: Ien[];
   bookmarks: Ien[];
   user: IUser;
+  attachment: CloudinaryFile[];
+
+  info: TPostInfo;
 }
 type Ien = { id: string };
 interface ITag {
@@ -31,9 +35,21 @@ export interface IPost {
   bookmarks: Ien[];
   user: IUser;
   tags: ITag[];
+  attachment: CloudinaryFile[];
+  info: TPostInfo;
 }
+export type TPostInfo = {
+  mentions: any[];
+  hashtags: any[];
+};
 
 export interface IBookmarks {
   id: string;
   post: IPostShort;
+}
+
+export interface IPostDTO {
+  text?: string;
+  info?: TPostInfo;
+  attachment?: CloudinaryResponse[] | null;
 }

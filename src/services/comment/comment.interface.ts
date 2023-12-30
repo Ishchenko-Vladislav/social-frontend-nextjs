@@ -11,8 +11,12 @@ export interface IComment {
   createdAt: Date;
   updatedAt: Date;
 }
-
+export type TCommentInfo = {
+  mentions: any[];
+  hashtags: any[];
+};
 export interface ICommentDto {
   text?: string;
   attachment?: CloudinaryResponse[] | null;
+  info?: TCommentInfo;
 }
