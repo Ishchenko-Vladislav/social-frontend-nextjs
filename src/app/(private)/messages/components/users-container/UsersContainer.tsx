@@ -1,5 +1,5 @@
 import { cn } from "@/utils/utils";
-import { FC } from "react";
+import { FC, useState } from "react";
 // import { LuMailPlus } from "react-icons";
 import { TbMailPlus } from "react-icons/tb";
 import { IoSearch } from "react-icons/io5";
@@ -10,10 +10,11 @@ interface Props {
 }
 
 export const UsersContainer: FC<Props> = ({ isCollapsed }) => {
+  const [term, setTerm] = useState<string>("");
   return (
-    <div className="w-full flex flex-col py-3 gap-4 h-full">
+    <div className="w-full flex flex-col py-3 gap-4 h-[calc(max(100dvh,500px))]">
       <div
-        className={cn("px-2 flex items-center justify-between text-xl", {
+        className={cn("px-2 mobile:flex items-center justify-between text-xl hidden", {
           ["px-0"]: isCollapsed,
         })}
       >
@@ -45,15 +46,16 @@ export const UsersContainer: FC<Props> = ({ isCollapsed }) => {
       >
         <div className="relative ">
           <input
+            onChange={(e) => setTerm(e.currentTarget.value)}
             className="w-full py-2 rounded-full border border-border pl-10 pr-2 truncate "
-            placeholder={"Search Direct Messages"}
+            placeholder={"Search people"}
             type="text"
           />
           <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
         </div>
       </div>
 
-      <Conversation isCollapsed={isCollapsed} />
+      <Conversation term={term} isCollapsed={isCollapsed} />
     </div>
   );
 };

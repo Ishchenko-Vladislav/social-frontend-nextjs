@@ -109,7 +109,13 @@ export const Post: FC<IPost> = (data) => {
         </TooltipProvider>
       </div>
       <div className="grid grid-cols-5 w-full gap-4 items-center py-1 text-muted-foreground no-link px-3 sm:px-4 border-y border-border">
-        <Comment queryKey={QUERY_KEY.post_by_id} onClick={() => {}} count={data.commentsCount} />
+        <Comment
+          withModal={false}
+          postId={data.id}
+          queryKey={QUERY_KEY.comments}
+          onClick={() => {}}
+          count={data.commentsCount}
+        />
         <Like
           // invalidate="data"
           queryKey={QUERY_KEY.post_by_id}

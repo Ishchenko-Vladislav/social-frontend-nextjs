@@ -1,7 +1,12 @@
 "use client";
 import { FC, useEffect, useRef, useState } from "react";
 import { RiQuillPenFill } from "react-icons/ri";
-interface Props {}
+interface Props {
+  postId: string;
+  count: number;
+  queryKey: string;
+  withModal: boolean;
+}
 import {
   Dialog,
   DialogClose,
@@ -12,7 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shadcn/ui/dialog";
-import { BiArrowBack } from "react-icons/bi";
+import { BiArrowBack, BiMessageRounded } from "react-icons/bi";
 import { AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
 import { useOwnProfile } from "@/hooks/user/useProfile";
 import TextareaAutosize from "react-textarea-autosize";
@@ -26,9 +31,12 @@ import { Skeleton } from "@/shadcn/ui/skeleton";
 import { Tooltip } from "@/components/ui/tooltip/Tooltip";
 import { AiOutlineClose } from "react-icons/ai";
 import Image from "next/image";
-import { Highlight } from "../create-post/CreatePost";
+import { Highlight } from "@/components/pages/post/create-comment/CreateComment";
+import { useCreateComment } from "@/hooks/comment/useCreateComment";
+import { TooltipForPost } from "@/components/ui/post/tooltip/TooltipForPost";
+// import { Highlight } from "../create-post/CreatePost";
 
-export const CreatePostMobile: FC<Props> = () => {
+export const CreateCommentModal: FC<Props> = ({ postId, count, queryKey, withModal }) => {
   const { data: d } = useOwnProfile();
   const ref = useRef<HTMLButtonElement>(null);
   const {
@@ -37,16 +45,16 @@ export const CreatePostMobile: FC<Props> = () => {
     attachments,
     uploadFile,
     isDisabledButton,
-    handleCreatePost,
-    handleClickEmoji,
     countToRender,
     attachmentsPreview,
     acceptFiles,
-    handlePostInfo,
     remove,
     isPending,
     isSuccess,
-  } = useCreatePost();
+    handleCommentInfo,
+    handleSendComment,
+    onEmojiClick,
+  } = useCreateComment(postId, queryKey, withModal);
   useEffect(() => {
     if (isSuccess) {
       if (ref && ref.current) {
@@ -61,8 +69,17 @@ export const CreatePostMobile: FC<Props> = () => {
     <div>
       <Dialog>
         <DialogTrigger>
-          <div className="fixed z-10 active:bg-primary/60 transition-colors text-2xl text-primary-foreground w-12 h-12 rounded-full bottom-20 right-5 bg-primary flex justify-center items-center">
-            <RiQuillPenFill />
+          <div className={cn("flex cursor-pointer items-center w-fit group px-2 -ml-4")}>
+            <TooltipForPost show="Reply">
+              <div className={cn(`rounded-full p-2 group-hover:bg-blue-500/20 transition-colors`)}>
+                <div className="flex justify-center items-center">
+                  <BiMessageRounded
+                    className={cn(`sm:text-lg text-sm group-hover:text-blue-500`)}
+                  />
+                </div>
+              </div>
+            </TooltipForPost>
+            <span className={`text-sm group-hover:text-blue-500 select-none`}>{count}</span>
           </div>
         </DialogTrigger>
         <DialogContent
@@ -81,10 +98,10 @@ export const CreatePostMobile: FC<Props> = () => {
             <>
               <button
                 disabled={isDisabledButton || isPending}
-                onClick={handleCreatePost}
+                onClick={handleSendComment}
                 className="px-3 py-1 disabled:bg-primary/70 rounded-full bg-primary text-primary-foreground text-sm active:bg-primary/70"
               >
-                Post
+                Reply
               </button>
             </>
           </div>
@@ -102,7 +119,7 @@ export const CreatePostMobile: FC<Props> = () => {
                 minRows={3}
               />
               <div className="absolute top-0 left-0 p-1 pointer-events-none select-none z-10 break-all whitespace-pre-wrap">
-                <Highlight handle={handlePostInfo} str={text} />
+                <Highlight handle={handleCommentInfo} str={text} />
               </div>
             </div>
           </div>
@@ -174,7 +191,7 @@ export const CreatePostMobile: FC<Props> = () => {
             ))}
           </div>
           <div className={cn("text-base flex items-center relative")}>
-            <PickEmoji onEmojiClick={handleClickEmoji}>
+            <PickEmoji onEmojiClick={onEmojiClick}>
               <button className="hover:bg-accent p-2 rounded-full transition-colors">
                 <FaRegFaceSmile className="text-primary " />
               </button>

@@ -16,7 +16,7 @@ interface Props {
 
 const page = ({ params }: Props) => {
   return (
-    <div className="flex flex-col border-r border-border h-full">
+    <div className="flex flex-col border-r border-border h-[100dvh]">
       <Info />
       {/* {isLoading ? <Skeleton className="h-12 w-full"></Skeleton> : <Info {...data} />} */}
       {/* {params.conversationId} */}

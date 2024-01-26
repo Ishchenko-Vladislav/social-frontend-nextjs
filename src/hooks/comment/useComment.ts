@@ -7,7 +7,7 @@ import { QUERY_KEY } from "@/utils/constants";
 import { IPost } from "@/services/post/post.interface";
 import { IPagination } from "@/utils/types";
 
-export const useSendComment = () => {
+export const useSendComment = (queryKey: string, withModal: boolean = false) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -17,13 +17,33 @@ export const useSendComment = () => {
       return result;
     },
     onSuccess: (newComment, variables, context) => {
-      queryClient.setQueryData([QUERY_KEY.comments], (data: IPagination<IComment>) => {
-        data.pages[0].unshift(newComment);
-        return {
-          pages: data.pages,
-          pageParams: data.pageParams,
-        };
-      });
+      if (withModal) {
+        queryClient.setQueryData([queryKey], (data: IPagination<IPost>) => {
+          return {
+            pages: data.pages.map((page) => {
+              console.log("PAGES __ --", page, newComment);
+              return page.map((post) => {
+                if (post.id === newComment?.post?.id) {
+                  console.log("NEW COMMENT __--", post, newComment);
+                  return {
+                    ...post,
+                    commentsCount: post.commentsCount + 1,
+                  };
+                } else return post;
+              });
+            }),
+            pageParams: data.pageParams,
+          };
+        });
+      } else {
+        queryClient.setQueryData([queryKey], (data: IPagination<IComment>) => {
+          data.pages[0].unshift(newComment);
+          return {
+            pages: data.pages,
+            pageParams: data.pageParams,
+          };
+        });
+      }
 
       // queryClient.setQueryData<IComment[]>([QUERY_KEY.comments], (oldData) => {
       //   if (oldData) {

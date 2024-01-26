@@ -1,6 +1,7 @@
 "use client";
 import { EmojiPicker } from "@/components/pages/post/create-comment/emoji-picker/EmojiPicker";
 import { PickEmoji, PickEmojiData } from "@/components/ui/pick-emoji/PickEmoji";
+import { useConversation } from "@/context/ConversationContext";
 import { usePreviewFile } from "@/hooks/usePreviewFile";
 import { IMessageDTO } from "@/services/conversation/conversation.interface";
 // import { ICommentDTO } from "@/services/conversation/conversation.interface";
@@ -14,11 +15,13 @@ import { FaRegFaceSmile } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import { PiImageBold } from "react-icons/pi";
 import ReactTextAreaAutoSize from "react-textarea-autosize";
+import { LuLoader2 } from "react-icons/lu";
 interface Props {}
 
 export const SendMessage: FC<Props> = () => {
   const [mounted, setMounted] = useState(false);
   const params = useParams();
+  const { addMessages } = useConversation();
   const [text, setText] = useState<string>("");
   const { attachments, acceptFiles, attachmentsPreview, countToRender, remove, uploadFile } =
     usePreviewFile();
@@ -26,16 +29,30 @@ export const SendMessage: FC<Props> = () => {
     setText((prev) => prev + emoji.native);
   };
 
+  // const send = async (message: IMessageDTO) => {
+  //   const promise = ConversationService.sendMessage(params.conversationId as string, message);
+  //   addMessages({
+  //     status: "pending",
+  //     msg: {
+  //       content: message.content,
+  //     },
+  //     promise,
+  //     withAnimation: true,
+  //   });
+  // };
+
   const { mutate: send, isPending } = useMutation({
     mutationFn: (message: IMessageDTO) =>
       ConversationService.sendMessage(params.conversationId as string, message),
     onSuccess: (message, variables, context) => {
-      console.log("HERE NEW message", message);
+      // console.log("HERE NEW message", message);
+      setText("");
     },
     onError(error, variables, context) {
       // setLiked((prev) => !prev);
       // setLikeCount((prev) => (liked ? prev - 1 : prev + 1));
     },
+    mutationKey: ["new-message"],
   });
 
   const submit = (e: FormEvent) => {
@@ -48,7 +65,7 @@ export const SendMessage: FC<Props> = () => {
       content: text,
     };
     send(message);
-    console.log("sendMessage");
+    // console.log("sendMessage");
   };
   const handleKeyPress = (e: any) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -66,9 +83,9 @@ export const SendMessage: FC<Props> = () => {
     <div className="py-2 px-2 w-full border-t border-border">
       <form
         onSubmit={submit}
-        className="relative border border-border flex items-center justify-between px-2 rounded-xl gap-3 h-min"
+        className="relative border border-border flex items-center justify-between px-2 rounded-xl gap-1 xs:gap-3 h-min"
       >
-        <div className=" flex gap-1">
+        <div className=" flex xs:gap-1">
           <PickEmoji onEmojiClick={onEmojiClick}>
             <button
               //   onClick={() => setShowEmoji((prev) => !prev)}
@@ -119,7 +136,7 @@ export const SendMessage: FC<Props> = () => {
             onChange={(e) => setText(e.target.value)}
             maxRows={6}
             rows={1}
-            defaultValue={""}
+            // defaultValue={""}
             onKeyDown={handleKeyPress}
             minRows={1}
             placeholder="Start a new message"
@@ -129,9 +146,10 @@ export const SendMessage: FC<Props> = () => {
 
         <button
           type="submit"
+          disabled={isPending}
           className="w-10 h-10 transition-colors rounded-full hover:bg-secondary flex justify-center items-center"
         >
-          <IoSend className="text-primary" />
+          {isPending ? <LuLoader2 className="animate-spin" /> : <IoSend className="text-primary" />}
         </button>
       </form>
     </div>

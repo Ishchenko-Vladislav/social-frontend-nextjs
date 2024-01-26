@@ -20,6 +20,7 @@ interface IAuthorizationContext {
   // isAuthorization: boolean;
   // setIsAuthorization: Dispatch<SetStateAction<boolean>>;
   user: IAuthUser;
+  logout: () => void;
 }
 
 const AuthorizationContext = createContext({} as IAuthorizationContext);
@@ -28,10 +29,16 @@ export const useAuth = () => {
 };
 export const AuthorizationProvider = ({ children }: { children: ReactNode }) => {
   // const [isAuthorization, setIsAuthorization] = useState(false);
+  const { push } = useRouter();
 
   const { isLoading, user } = useIsAuth();
+  const logout = () => {
+    Cookie.remove(TOKENS_ENUM.ACCESS_TOKEN);
+    Cookie.remove(TOKENS_ENUM.REFRESH_TOKEN);
+    localStorage && localStorage.clear();
+    push("/login");
+  };
   // const pathname = usePathname();
-  // const { replace } = useRouter();
   // useEffect(() => {
   //   checkAuth();
   // }, [pathname]);
@@ -65,7 +72,11 @@ export const AuthorizationProvider = ({ children }: { children: ReactNode }) => 
   //   localStorage && localStorage.clear();
   // };
   if (isLoading) return <Preloader />;
-  return <AuthorizationContext.Provider value={{ user }}>{children}</AuthorizationContext.Provider>;
+  return (
+    <AuthorizationContext.Provider value={{ user, logout }}>
+      {children}
+    </AuthorizationContext.Provider>
+  );
 };
 
 const publicRoute = [PAGES_ROUTE.login, PAGES_ROUTE.register];

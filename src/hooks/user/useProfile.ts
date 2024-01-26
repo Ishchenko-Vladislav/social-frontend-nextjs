@@ -8,6 +8,7 @@ import { QUERY_KEY } from "@/utils/constants";
 import { PostService } from "@/services/post/post.service";
 import { IAxiosErrorData } from "../useAuth";
 import { ConversationService } from "@/services/conversation/conversation.service";
+
 export const useOwnProfile = () => {
   // const { replace } = useRouter();
   return useQuery({

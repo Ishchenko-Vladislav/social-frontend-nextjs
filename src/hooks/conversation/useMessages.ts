@@ -1,24 +1,57 @@
+import { IMessageRender } from "@/context/ConversationContext";
+import { useSocket } from "@/context/SocketContext";
 import { IMessage } from "@/services/conversation/conversation.interface";
 import { ConversationService } from "@/services/conversation/conversation.service";
 import { useEffect, useState } from "react";
 interface IUseMessages {
-  conversationId: string;
+  conversationId: string | undefined;
 }
-export const useMessages = ({ conversationId }: IUseMessages) => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
+export const useMessages = (opt: IUseMessages) => {
+  const [messages, setMessages] = useState<IMessageRender[]>([]);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [hasNextData, setHasNextData] = useState<boolean>(true);
 
-  const getMessages = async () => {
-    const res = await ConversationService.getMessages(conversationId, messages.length);
+  const getMessages = async (convId: string, skip: number = 0) => {
+    const res = await ConversationService.getMessages(convId, skip);
     return res;
   };
 
   useEffect(() => {
-    getMessages().then((res) => setMessages(res.data));
-
+    setMessages([]);
+    setHasNextData(true);
     return () => {};
-  }, [conversationId]);
+  }, [opt.conversationId]);
+
+  const getNextData = async () => {
+    if (opt?.conversationId && hasNextData) {
+      setIsPending(true);
+      try {
+        const res = await getMessages(opt?.conversationId, messages.length);
+        if (res.data) {
+          if (res.data.length === 0) {
+            setHasNextData(false);
+          } else {
+            const data: IMessageRender[] = res.data.map((msg) => {
+              return {
+                withAnimation: false,
+                msg,
+              };
+            });
+            // console.log("HERE GET NEXT DATA", res.data);
+            setMessages((prev) => [...prev, ...data]);
+          }
+        }
+      } catch (error) {
+      } finally {
+        setIsPending(false);
+      }
+    }
+  };
 
   return {
     messages,
+    isPending,
+    setMessages,
+    getNextData,
   };
 };

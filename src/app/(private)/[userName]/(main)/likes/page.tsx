@@ -1,6 +1,6 @@
 "use client";
 import { Post } from "@/components/ui/post/Post";
-import { useGetProfilePostsWithLikes } from "@/hooks/post/usePost";
+// import { useGetProfilePostsWithLikes } from "@/hooks/post/usePost";
 import { useInfinityLoad } from "@/hooks/useInfinityLoad";
 import { IPostShort } from "@/services/post/post.interface";
 import { PostService } from "@/services/post/post.service";
@@ -21,7 +21,7 @@ const page: FC<Props> = ({ params }) => {
   };
   const { data, isFetchingNextPage } = useInfinityLoad<IPostShort>({
     fetchDataFn: fetchProjects,
-    queryKey: [QUERY_KEY.profile_posts],
+    queryKey: [QUERY_KEY.profile_posts_with_likes],
   });
   return (
     <div>

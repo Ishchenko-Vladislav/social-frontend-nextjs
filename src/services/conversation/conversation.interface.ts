@@ -15,7 +15,7 @@ export interface IConversation {
   updatedAt: Date;
   type: TConversationType;
   users: IUser[];
-  lastMessageSent: null | string;
+  lastMessageSent: null | IMessage;
 }
 
 export type TConversationType = "private";

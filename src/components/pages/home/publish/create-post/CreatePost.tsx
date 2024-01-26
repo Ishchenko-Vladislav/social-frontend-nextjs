@@ -30,51 +30,68 @@ import { Spinner } from "@/components/ui/spinner/Spinner";
 import { EmojiPicker } from "@/components/pages/post/create-comment/emoji-picker/EmojiPicker";
 import { useCreatePost } from "@/hooks/post/usePost";
 import { IPostDTO } from "@/services/post/post.interface";
+import { PickEmoji, PickEmojiData } from "@/components/ui/pick-emoji/PickEmoji";
 interface Props {}
 
 export const CreatePost: FC<Props> = ({}) => {
   const [focused, setFocused] = useState(false);
-  const [showEmoji, setShowEmoji] = useState(false);
-  const [isDisabledButton, setIsDisabledButton] = useState(true);
-  const [text, setText] = useState<string>("");
-  const postInfoRef = useRef<TCommentInfo>({
-    hashtags: [],
-    mentions: [],
-  });
-  const { attachments, acceptFiles, attachmentsPreview, countToRender, remove, uploadFile } =
-    usePreviewFile();
+  const {
+    text,
+    setText,
+    attachments,
+    uploadFile,
+    isDisabledButton,
+    handleCreatePost,
+    handleClickEmoji,
+    countToRender,
+    attachmentsPreview,
+    acceptFiles,
+    handlePostInfo,
+    remove,
+    isPending,
+  } = useCreatePost();
+  // const [isDisabledButton, setIsDisabledButton] = useState(true);
+  // const [text, setText] = useState<string>("");
+  // const postInfoRef = useRef<TCommentInfo>({
+  //   hashtags: [],
+  //   mentions: [],
+  // });
+  // const { attachments, acceptFiles, attachmentsPreview, countToRender, remove, uploadFile } =
+  //   usePreviewFile();
   const { data: d } = useOwnProfile();
-  const { mutate: createPost, isPending, isError, isSuccess } = useCreatePost();
-  const emojiHandle = (e: any) => {
-    setText(e.native);
-  };
-  const handleCreatePost = () => {
-    const data: IPostDTO = {
-      attachment: attachments,
-      info: postInfoRef.current,
-      text: text,
-    };
-    console.log("HERE POST", data);
-    createPost(data);
-  };
-  useEffect(() => {
-    if (isSuccess) {
-      remove("all");
-      setText("");
-    }
-  }, [isSuccess]);
-  useEffect(() => {
-    if (!!text.length || !!attachments.length) {
-      setIsDisabledButton(false);
-    } else {
-      setIsDisabledButton(true);
-    }
-  }, [text, attachments]);
-
-  const handlePostInfo = (props: TCommentInfo) => {
-    postInfoRef.current = props;
-    console.log(postInfoRef);
-  };
+  // const { mutate: createPost, isPending, isError, isSuccess } = useCreatePost();
+  // const emojiHandle = (e: any) => {
+  //   setText(e.native);
+  // };
+  // const handleCreatePost = () => {
+  //   const data: IPostDTO = {
+  //     attachment: attachments,
+  //     info: postInfoRef.current,
+  //     text: text,
+  //   };
+  //   console.log("HERE POST", data);
+  //   createPost(data);
+  // };
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     remove("all");
+  //     setText("");
+  //   }
+  // }, [isSuccess]);
+  // useEffect(() => {
+  //   if (!!text.length || !!attachments.length) {
+  //     setIsDisabledButton(false);
+  //   } else {
+  //     setIsDisabledButton(true);
+  //   }
+  // }, [text, attachments]);
+  // const handleClickEmoji = (emoji: PickEmojiData) => {
+  //   setText((prev) => prev + emoji.native);
+  // };
+  // const handlePostInfo = (props: TCommentInfo) => {
+  //   postInfoRef.current = props;
+  //   // console.log(postInfoRef);
+  // };
   return (
     <div className="py-2 border-b border-border">
       <div className="px-3 flex justify-between">
@@ -180,7 +197,12 @@ export const CreatePost: FC<Props> = ({}) => {
                 ["hidden"]: !focused,
               })}
             >
-              <div className="relative ">
+              <PickEmoji onEmojiClick={handleClickEmoji}>
+                <button className="hover:bg-accent p-2 rounded-full transition-colors">
+                  <FaRegFaceSmile className="text-primary " />
+                </button>
+              </PickEmoji>
+              {/* <div className="relative ">
                 <button
                   onClick={() => setShowEmoji((prev) => !prev)}
                   className="hover:bg-accent p-2 rounded-full transition-colors"
@@ -190,7 +212,7 @@ export const CreatePost: FC<Props> = ({}) => {
                 {showEmoji ? (
                   <EmojiPicker close={() => setShowEmoji(false)} selectedEmoji={emojiHandle} />
                 ) : null}
-              </div>
+              </div> */}
               <div>
                 <input
                   onChange={uploadFile}

@@ -10,13 +10,13 @@ import { ILoginFields } from "@/services/auth/auth.interface";
 interface Props {}
 
 export const Login: FC<Props> = () => {
-  const { mutate, isLoading, error } = useLogin();
+  const { mutate, isPending, error } = useLogin();
 
   return (
     <div className={styles.page}>
       <h2>Login</h2>
       <Form<ILoginFields>
-        isLoading={isLoading}
+        isLoading={isPending}
         submitAction={mutate}
         buttonTitle="Login"
         fields={loginFields}

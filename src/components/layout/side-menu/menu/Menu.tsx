@@ -95,9 +95,10 @@ export const Menu: FC<Props> = ({ setIsOpen, setIsOpenCustomize }) => {
         <div className="text-foreground flex flex-col py-4 border-y border-border">
           {navigation
             .filter((el) => el.mobile == false)
-            .map((item) => (
-              <MenuItem setIsOpen={setIsOpen} key={item.title} {...item} />
-            ))}
+            .map((item) => {
+              if (item.link === "/profile") item.link = "/" + user.userName;
+              return <MenuItem setIsOpen={setIsOpen} key={item.title} {...item} />;
+            })}
         </div>
 
         <Accordion className="px-4 " type="single" collapsible>

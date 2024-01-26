@@ -34,10 +34,11 @@ export const NewMessageDialog: FC<PropsWithChildren<Props>> = ({ children }) => 
     filters: { mutationKey: ["new_conservation"], status: "pending" },
     select: (mutation) => mutation.state,
   });
+  //max-h-[calc(min(1000px,95dvh))] min-h-[calc(max(500px,70dvh))]
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="px-0 ">
+      <DialogContent className="px-0  overflow-y-auto max-h-[100dvh]">
         {variables.length > 0 ? (
           <div className="absolute inset-0 flex justify-center items-center bg-black/20">
             <div className="py-5 flex justify-center items-center gap-2 text-2xl">
@@ -53,7 +54,7 @@ export const NewMessageDialog: FC<PropsWithChildren<Props>> = ({ children }) => 
             data from our servers.
           </DialogDescription> */}
         </DialogHeader>
-        <div className="px-4">
+        <div className="px-4 h-fit">
           <div className="w-full items-center flex gap-3">
             <IoSearch className="text-xl" />
             <input
@@ -72,53 +73,6 @@ export const NewMessageDialog: FC<PropsWithChildren<Props>> = ({ children }) => 
           <span className="text-xl">Create group</span>
         </button>
         <Recipients searchTerms={searchTerms} />
-        {/* <div>
-          <div>
-            {data && data.pages && data.pages.length > 0 && data.pages[0].length ? (
-              data.pages.map((page) => {
-                return page.map((u) => (
-                  <button
-                    key={u.id}
-                    className={cn(
-                      "flex gap-2 px-4 py-2 hover:bg-secondary max-w-full w-full transition-colors items-center",
-                      
-                    )}
-                  >
-                    <div>
-                      <AvatarIconPrototype className="w-10 h-10" avatarPath={u.toUser.avatarPath} />
-                    </div>
-                    <div
-                      className={cn("flex flex-col gap-2 overflow-hidden", {
-                      })}
-                    >
-                      <div className="flex flex-col  items-start text-sm md:text-base">
-                        <div>
-                          <span className="font-bold ">{u.toUser.displayName}</span>
-                        </div>
-                        <div className="overflow-hidden truncate">
-                          <span className="text-muted-foreground">@{u.toUser.userName}</span>
-                        </div>
-                      </div>
-                      <div></div>
-                    </div>
-                  </button>
-                ));
-              })
-            ) : (
-              <div className="text-center py-5 border-b border-border">
-                <div className="text-xl">not following</div>
-               
-              </div>
-            )}
-            {isFetchingNextPage ? (
-              <div className="py-5 flex justify-center items-center gap-2">
-                <ImSpinner6 className="animate-spin" />
-                <span>Loading</span>
-              </div>
-            ) : null}
-          </div>
-          <div ref={refetchRef}></div>
-        </div> */}
       </DialogContent>
     </Dialog>
   );

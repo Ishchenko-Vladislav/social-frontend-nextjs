@@ -9,13 +9,13 @@ import { IRegisterFields } from "@/services/auth/auth.interface";
 interface Props {}
 
 export const Register: FC<Props> = () => {
-  const { mutate, isLoading, error } = useRegister();
+  const { mutate, isPending, error } = useRegister();
 
   return (
     <div className={styles.page}>
       <h2>Register</h2>
       <Form<IRegisterFields>
-        isLoading={isLoading}
+        isLoading={isPending}
         submitAction={mutate}
         fields={registerFields}
         buttonTitle="Create new account"

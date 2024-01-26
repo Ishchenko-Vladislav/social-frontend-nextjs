@@ -130,7 +130,13 @@ export const Post: FC<Props> = ({ queryKey, attachment, ...post }) => {
             : null}
         </div>
         <div className="grid grid-cols-5 w-full gap-4 items-center pt-1 text-muted-foreground">
-          <Comment queryKey={queryKey} onClick={commentHandle} count={post.commentsCount} />
+          <Comment
+            withModal
+            postId={post.id}
+            queryKey={queryKey}
+            onClick={commentHandle}
+            count={post.commentsCount}
+          />
           <Like
             queryKey={queryKey}
             id={post.id}

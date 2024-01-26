@@ -17,7 +17,8 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
           className={cn(
             "flex-1 max-w-2xl h-fit pb-16 mobile:pb-0 min-h-screen border-border border-r",
             {
-              ["border-r-0 max-w-[62rem] xl:max-w-[66rem] w-full"]: pathname.includes("/messages"),
+              ["border-r-0 max-w-[62rem] xl:max-w-[66rem] w-full pb-0"]:
+                pathname.includes("/messages"),
             }
           )}
         >

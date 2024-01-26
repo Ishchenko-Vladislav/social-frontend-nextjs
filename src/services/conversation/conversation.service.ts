@@ -6,6 +6,7 @@ import {
   IMessage,
   IMessageDTO,
 } from "./conversation.interface";
+import { sleep } from "@/utils/utils";
 
 export const ConversationService = {
   create: (userId: string) => {
@@ -13,10 +14,11 @@ export const ConversationService = {
       API_URL + CONVERSATION_ROUTE.createConversation + userId
     );
   },
-  getConversation: (pageParam: number) => {
+  getConversation: (skip: number, take: number) => {
     return axiosInstance.get<IConversation[]>(API_URL + CONVERSATION_ROUTE.getConversation, {
       params: {
-        pageParam,
+        skip,
+        take,
       },
     });
   },
@@ -36,7 +38,8 @@ export const ConversationService = {
       }
     );
   },
-  sendMessage: (conversationId: string, message: IMessageDTO) => {
+  sendMessage: async (conversationId: string, message: IMessageDTO) => {
+    // await sleep(5000);
     return axiosInstance.post<IMessage>(
       API_URL + CONVERSATION_ROUTE.sendMessage + conversationId,
       message

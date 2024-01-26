@@ -19,7 +19,7 @@ export const useUploadFile = () => {
   const [progress, setProgress] = useState<number>(0);
   const [attachments, setAttachments] = useState<CloudinaryResponse[]>([]);
 
-  const { mutateAsync, data, isLoading, isError, reset } = useMutation({
+  const { mutateAsync, data, isPending, isError, reset } = useMutation({
     mutationFn: async (file: FormData) => fileService.uploadFile(file, setProgress),
     // mutationFn: async (file: FormData) => {
 
@@ -53,7 +53,7 @@ export const useUploadFile = () => {
       console.log(error);
       return error;
     },
-    cacheTime: 0,
+    // cacheTime: 0,
     retry: false,
   });
 
@@ -138,8 +138,8 @@ export const useUploadFile = () => {
     formData.append("file", files[0]);
     formData.append("upload_preset", "wfz11ll4");
     // await uploadFile(formData);
-    // await mutateAsync(formData);
-    console.log("formData", files[0], resource_type);
+    await mutateAsync(formData);
+    // console.log("formData", files[0], resource_type);
     // e.target.value = "";
   };
 
@@ -156,7 +156,7 @@ export const useUploadFile = () => {
     status,
     progress,
     attachments,
-    isLoadingFile: isLoading,
+    isLoadingFile: isPending,
     isErrorLoadingFile: isError,
     remove,
     uploadFile,

@@ -18,6 +18,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserService } from "@/services/user/user.service";
 import { QUERY_KEY } from "@/utils/constants";
 import { AxiosError } from "axios";
+import { UpdateProfile } from "./UpdateProfile";
 
 interface Props {
   userName: string;
@@ -30,7 +31,7 @@ export const Profile: FC<Props> = ({ userName }) => {
   const button = () => {
     if (!data?.followers) return;
     const isMe = data && data.id === user.id;
-    if (isMe) return <span>settings</span>;
+    if (isMe) return <UpdateProfile user={data} />;
     return data?.followers[0] ? "unfollow" : "follow";
   };
   console.log("HEEEEE", data);
@@ -66,7 +67,7 @@ export const Profile: FC<Props> = ({ userName }) => {
         <div className="p-1.5 bg-background rounded-full flex justify-center items-center">
           <AvatarIconPrototype
             className="sm:w-32 sm:h-32 w-24 h-24"
-            avatarPath={data?.avatarPath || ""}
+            avatarPath={data?.avatarPath?.url || ""}
           />
         </div>
         <div

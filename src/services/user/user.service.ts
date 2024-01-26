@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/api/instance";
 import { API_URL, USER_ROUTE } from "@/utils/constants";
-import { IFollowing, IFollower, ISub, IUser } from "./user.interface";
+import { IFollowing, IFollower, ISub, IUser, UpdateUserDto } from "./user.interface";
 import Cookie from "js-cookie";
 export const UserService = {
   async getOwnProfile() {
@@ -13,6 +13,9 @@ export const UserService = {
     const uri = userName ? url + `/${userName}` : url;
     const response = await axiosInstance.get<IUser>(uri);
     return response.data;
+  },
+  async updateProfile(updateUserDto: UpdateUserDto) {
+    return axiosInstance.put(API_URL + "/user/update", updateUserDto);
   },
 
   async statusIsSubscription(userId: string) {

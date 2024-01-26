@@ -15,7 +15,7 @@ export const fileService = {
     image: "image",
     video: "video",
   },
-  async uploadFile(file: File, onProgress?: (a: number) => void) {
+  async uploadFile(file: FormData, onProgress?: (a: number) => void) {
     const url = "https://api.cloudinary.com/v1_1/daswkls85/image/upload";
     // const resource_type = this.dictionary_type[file.type.split("/")[0]];
     return axios

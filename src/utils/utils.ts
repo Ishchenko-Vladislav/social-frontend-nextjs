@@ -18,3 +18,6 @@ export function convertBase64(file: File): Promise<string | ArrayBuffer | null> 
     };
   });
 }
+
+export const sleep = async (milliseconds: number) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));

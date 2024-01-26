@@ -1,7 +1,7 @@
 "use client";
 import { Post } from "@/components/ui/post/Post";
 import { Spinner } from "@/components/ui/spinner/Spinner";
-import { useBookmarks } from "@/hooks/post/usePost";
+// import { useBookmarks } from "@/hooks/post/usePost";
 import { useInfinityLoad } from "@/hooks/useInfinityLoad";
 import { IBookmarks, IPostShort } from "@/services/post/post.interface";
 import { PostService } from "@/services/post/post.service";

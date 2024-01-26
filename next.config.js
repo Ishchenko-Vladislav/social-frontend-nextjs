@@ -14,6 +14,7 @@ const nextConfig = {
     APP_URL: process.env.APP_URL,
     DEV_MODE: process.env.DEV_MODE,
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    NEXT_APP_WEBSOCKET_URL: process.env.NEXT_APP_WEBSOCKET_URL,
   },
   images: {
     domains: ["res.cloudinary.com"],

@@ -487,3 +487,20 @@ em-emoji-picker {
 /* em-emoji-picker > section {
   height: 100%;
 } */
+.new-scrollbar {
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  /* background: #f1f1f1; */
+}
+::-webkit-scrollbar-thumb {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f1f1f1;
+}

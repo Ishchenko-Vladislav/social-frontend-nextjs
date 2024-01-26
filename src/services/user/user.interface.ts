@@ -2,15 +2,26 @@ export interface IUser {
   id: string;
   createdAt: string;
   updatedAt: string;
+  bgPath: LowAttach | null;
   email: string;
   userName: string;
   displayName: string;
   isVerified: boolean;
-  avatarPath: string | null;
+  avatarPath: LowAttach | null;
   // following: any[];
   followers: any[];
   followersCount: number;
   followingCount: number;
+}
+export interface LowAttach {
+  public_id: string;
+  url: string;
+}
+export interface UpdateUserDto {
+  displayName: string;
+  avatarPath: LowAttach | null;
+  bgPath: LowAttach | null;
+  userName: string;
 }
 
 export interface ISub {

@@ -8,9 +8,29 @@ import { ThemeConfigProvider } from "@/context/ThemeConfig";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { SocketProvider } from "@/context/SocketContext";
+// import updateLocale from "dayjs/plugin/updateLocale";
 
 export const RootProvider: FC<PropsWithChildren> = ({ children }) => {
   dayjs.extend(relativeTime);
+  // dayjs.extend(updateLocale);
+  // dayjs.updateLocale('en', {
+  //   relativeTime: {
+  //     future: "in %s",
+  //     past: "%s ago",
+  //     s: 'a few seconds',
+  //     m: "a minute",
+  //     mm: "%d minutes",
+  //     h: "an hour",
+  //     hh: "%d hours",
+  //     d: "a day",
+  //     dd: "%d days",
+  //     M: "a month",
+  //     MM: "%d months",
+  //     y: "a year",
+  //     yy: "%d years"
+  //   }
+  // })
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -22,7 +42,9 @@ export const RootProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <ThemeConfigProvider>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <>{children}</>
+        </QueryClientProvider>
         <ThemeSwitcher />
       </ThemeConfigProvider>
       <ProgressBar />

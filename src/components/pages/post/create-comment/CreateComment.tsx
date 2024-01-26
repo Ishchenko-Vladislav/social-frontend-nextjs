@@ -30,64 +30,35 @@ import Image from "next/image";
 import { Skeleton } from "@/shadcn/ui/skeleton";
 import { usePreviewFile } from "@/hooks/usePreviewFile";
 import { Spinner } from "@/components/ui/spinner/Spinner";
+import { PickEmoji, PickEmojiData } from "@/components/ui/pick-emoji/PickEmoji";
+import { useCreateComment } from "@/hooks/comment/useCreateComment";
+import { QUERY_KEY } from "@/utils/constants";
 interface Props {
   postId: string;
+  queryKey?: string;
 }
 
 //<string | ArrayBuffer | null>
 export const CreateComment: FC<Props> = ({ postId }) => {
   const [focused, setFocused] = useState(false);
-  const [showEmoji, setShowEmoji] = useState(false);
-  const [isDisabledButton, setIsDisabledButton] = useState(true);
-  const [text, setText] = useState<string>("");
-  const commentInfoRef = useRef<TCommentInfo>({
-    hashtags: [],
-    mentions: [],
-  });
-
-  const { attachments, acceptFiles, attachmentsPreview, countToRender, remove, uploadFile } =
-    usePreviewFile();
   const { data: d } = useOwnProfile();
-  const { mutate: sendComment, variables, isPending, isError, isSuccess, error } = useSendComment();
-  const emojiHandle = (e: any) => {
-    setText((prev) => prev + e.native);
-  };
-  const handleSendComment = () => {
-    const dataForFetchComment: {
-      comment: ICommentDto;
-      postId: string;
-    } = {
-      comment: {
-        text: text,
-        attachment: attachments,
-        info: commentInfoRef.current,
-        // attachment: attachments && attachments.length > 0 ? attachments : null,
-      },
-      postId,
-    };
-    sendComment(dataForFetchComment);
-  };
-  useEffect(() => {
-    // console.log("HEE IS SUCCESS", error, variables, status);
 
-    if (isSuccess) {
-      remove("all");
-      setText("");
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (!!text.length || !!attachments.length) {
-      setIsDisabledButton(false);
-    } else {
-      setIsDisabledButton(true);
-    }
-  }, [text, attachments]);
-
-  const handleCommentInfo = (props: TCommentInfo) => {
-    commentInfoRef.current = props;
-    console.log(commentInfoRef);
-  };
+  const {
+    text,
+    setText,
+    isDisabledButton,
+    isSuccess,
+    acceptFiles,
+    attachments,
+    attachmentsPreview,
+    countToRender,
+    handleCommentInfo,
+    handleSendComment,
+    onEmojiClick,
+    remove,
+    uploadFile,
+    isPending,
+  } = useCreateComment(postId, QUERY_KEY.comments);
   return (
     <div className="py-2 border-b border-border">
       <div className="px-3 sm:px-4 flex justify-between">
@@ -192,17 +163,11 @@ export const CreateComment: FC<Props> = ({ postId }) => {
                 ["hidden"]: !focused,
               })}
             >
-              <div className="relative ">
-                <button
-                  onClick={() => setShowEmoji((prev) => !prev)}
-                  className="hover:bg-accent p-2 rounded-full transition-colors"
-                >
+              <PickEmoji onEmojiClick={onEmojiClick}>
+                <button className="hover:bg-accent p-2 rounded-full transition-colors">
                   <FaRegFaceSmile className="text-primary " />
                 </button>
-                {showEmoji ? (
-                  <EmojiPicker close={() => setShowEmoji(false)} selectedEmoji={emojiHandle} />
-                ) : null}
-              </div>
+              </PickEmoji>
               <div>
                 <input
                   onChange={uploadFile}

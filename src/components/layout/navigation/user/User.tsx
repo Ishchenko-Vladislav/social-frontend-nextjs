@@ -10,15 +10,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/ui/avatar";
 import { useFixed } from "@/context/FixedContext";
 import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import { useAuth } from "@/context/auth/Authorization";
 
 interface Props {}
 
 export const User: FC<Props> = () => {
   const { data, isLoading, error } = useOwnProfile();
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
   const { setOpenCustomize } = useFixed();
   const { width } = useWindowSize();
   if (width < 500) return null;
+  // const logout = ()
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -49,12 +52,14 @@ export const User: FC<Props> = () => {
           <PopoverClose onClick={() => setIsOpen(true)} className={styles.customizeButton}>
             <LuPaintbrush /> Customize
           </PopoverClose>
-          <button className={styles.signout}>
-            <div>Sign out</div>
-            <div className="text-muted-foreground text-sm leading-4 break-all">
-              @{data?.userName}
-            </div>
-          </button>
+          <PopoverClose asChild>
+            <button onClick={logout} className={styles.signout}>
+              <div>Sign out</div>
+              <div className="text-muted-foreground text-sm leading-4 break-all">
+                @{data?.userName}
+              </div>
+            </button>
+          </PopoverClose>
         </div>
       </PopoverContent>
 

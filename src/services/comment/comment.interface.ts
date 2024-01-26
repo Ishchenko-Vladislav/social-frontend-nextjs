@@ -1,4 +1,5 @@
 import { CloudinaryFile, CloudinaryFileUpload, CloudinaryResponse } from "../file/file.interface";
+import { IPost } from "../post/post.interface";
 import { IUser } from "../user/user.interface";
 
 export interface IComment {
@@ -6,6 +7,7 @@ export interface IComment {
   text: string | null;
   likes: any[];
   likesCount: number;
+  post?: IPost;
   user: IUser;
   attachment: CloudinaryFile[];
   createdAt: Date;

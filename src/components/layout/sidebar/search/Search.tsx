@@ -6,6 +6,7 @@ import {
   MouseEvent,
   RefObject,
   SetStateAction,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -14,35 +15,60 @@ import styles from "./Search.module.scss";
 import { BiSearch } from "react-icons/bi";
 import { ITag, useSearch } from "@/hooks/useSearch";
 import useDebounce from "@/hooks/useDebounce";
-import cn from "classnames";
+// import cn from "classnames";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/ui/avatar";
 import { IUser } from "@/services/user/user.interface";
 import { PiUserLight } from "react-icons/pi";
 import Link from "next/link";
 import { AvatarIcon, AvatarIconPrototype } from "@/components/ui/avatar/Avatar";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { cn } from "@/utils/utils";
 
 interface Props {}
 
 export const Search: FC<Props> = () => {
   const [searchTerms, setSearchTerms] = useState<string>("");
   const debouncedValue = useDebounce(searchTerms, 500);
+  const searchParams = useSearchParams();
   const { data, isError, isLoading } = useSearch<IUser[] | ITag[]>({
     searchTerm: debouncedValue,
   });
   const [isOpen, setIsOpen] = useState(false);
-
+  const { push } = useRouter();
+  // const {} = use
+  const pathname = usePathname();
   const onFocusHandler = (e: FocusEvent<HTMLDivElement>) => {
     setIsOpen(true);
   };
+  const createQueryString = useCallback((name: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(name, value);
 
+    return params.toString();
+  }, []);
+  const dd = () => {
+    push("/explore" + "?" + createQueryString("q", searchTerms));
+  };
   return (
-    <div className="relative">
+    <div
+      className={cn("relative", {
+        ["hidden"]: pathname.includes("explore"),
+      })}
+    >
       <div className={styles.search}>
         <input
           data-close="false"
           className={styles.searchInput}
           onChange={({ target }) => setSearchTerms(target.value)}
           type="text"
+          value={searchTerms}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              dd();
+              // console.log(searchTerms);
+              // push(`/explore?q=${searchTerms}`);
+            }
+          }}
           placeholder="Search"
           onFocus={onFocusHandler}
         />
@@ -72,12 +98,15 @@ export const FindBlock: FC<IFindBlock> = ({ data, searchTerms, setIsOpen }) => {
   const onClickHandle = (e: MouseEvent) => {
     e.stopPropagation();
   };
+  const close = () => setIsOpen(false);
+
   return (
     <div onClick={onClickHandle} className={styles.searchBlock}>
       {data && !!data.length && !!searchTerms.length ? (
         data.map((el) => {
-          if ((el as IUser)?.userName) return <SearchItem key={el.id} {...(el as IUser)} />;
-          else return <SearchHashtag key={el.id} {...(el as ITag)} />;
+          if ((el as IUser)?.userName)
+            return <SearchItem close={close} key={el.id} {...(el as IUser)} />;
+          else return <SearchHashtag close={close} key={el.id} {...(el as ITag)} />;
         })
       ) : (
         <div className="p-3 text-center">Try searching for people, or hashtags of interest</div>
@@ -86,9 +115,17 @@ export const FindBlock: FC<IFindBlock> = ({ data, searchTerms, setIsOpen }) => {
   );
 };
 
-export const SearchHashtag: FC<ITag> = (tag) => {
+export const SearchHashtag: FC<
+  ITag & {
+    close: () => void;
+  }
+> = (tag) => {
   return (
-    <Link href={"/explore"} className="flex items-center gap-4  p-2 hover:bg-accent">
+    <Link
+      onClick={close}
+      href={`/explore?q=${tag.name}`}
+      className="flex items-center gap-4  p-2 hover:bg-accent"
+    >
       <div className="text-2xl">
         <BiSearch />
       </div>
@@ -100,9 +137,17 @@ export const SearchHashtag: FC<ITag> = (tag) => {
   );
 };
 
-export const SearchItem: FC<IUser> = (user) => {
+export const SearchItem: FC<
+  IUser & {
+    close: () => void;
+  }
+> = (user) => {
   return (
-    <Link href={`/${user.userName}`} className="flex gap-4 items-center hover:bg-accent p-2">
+    <Link
+      onClick={close}
+      href={`/${user.userName}`}
+      className="flex gap-4 items-center hover:bg-accent p-2"
+    >
       {/* <Avatar className="w-8 h-8 shrink-0 border-0">
         <AvatarImage src={user?.avatarPath || ""} />
         <AvatarFallback className="dark:bg-muted-foreground bg-muted-foreground">

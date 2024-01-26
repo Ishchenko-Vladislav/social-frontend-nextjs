@@ -28,7 +28,7 @@ export const usePreviewFile = () => {
     // { resource_type: "image" },
   ]);
   const [acceptFiles, setAcceptFiles] = useState<TAcceptFiles>("image/*, video/*");
-  const { mutateAsync, data, isLoading, isError, reset } = useMutation({
+  const { mutateAsync, data, isPending, isError, reset } = useMutation({
     // mutationFn: async (file: FormData) => fileService.uploadFile(file, setProgress),
     mutationFn: async (files: FileList) => {
       // setAttachmentsPreview({ isPreview: true, previewCount: files.length });
@@ -63,7 +63,7 @@ export const usePreviewFile = () => {
       // });
       setAttachmentsPreview([]);
     },
-    cacheTime: 0,
+    // cacheTime: 0,
     retry: false,
   });
 
@@ -97,13 +97,13 @@ export const usePreviewFile = () => {
   const beforeUnload = () => {
     attachRef.current.map((el: any) => fileService.deleteFile(el.public_id));
   };
-  const remove = async (obj: CloudinaryResponse | "all") => {
-    if (obj === "all") {
+  const remove = async (public_id: string | "all") => {
+    if (public_id === "all") {
       return setAttachments([]);
     }
-    const res = fileService.deleteFile(obj.public_id);
+    const res = fileService.deleteFile(public_id);
     setAttachments((prev) => {
-      return prev.filter((el) => el.public_id !== obj.public_id);
+      return prev.filter((el) => el.public_id !== public_id);
     });
   };
   const f = (files: FileList) => {

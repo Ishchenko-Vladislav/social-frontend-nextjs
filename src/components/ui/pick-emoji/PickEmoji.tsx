@@ -20,10 +20,10 @@ interface Props {
 export const PickEmoji: FC<PropsWithChildren<Props>> = ({ children, onEmojiClick }) => {
   const { theme } = useTheme();
   return (
-    <Popover>
+    <Popover modal={false}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="p-0" asChild>
-        <div className="p-0 relative">
+      <PopoverContent className="p-0 z-50 pointer-events-auto" asChild>
+        <div className="p-0 relative ">
           <Picker
             onEmojiSelect={onEmojiClick}
             className="!h-10"

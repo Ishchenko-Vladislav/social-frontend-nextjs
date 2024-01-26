@@ -24,13 +24,13 @@ export const navigation: INavigationItem[] = [
     FirstIcon: RiSearch2Line,
     SecondIcon: RiSearch2Fill,
   },
-  {
-    link: "/notification",
-    title: "Notification",
-    mobile: true,
-    FirstIcon: RiNotification2Line,
-    SecondIcon: RiNotification2Fill,
-  },
+  // {
+  //   link: "/notification",
+  //   title: "Notification",
+  //   mobile: true,
+  //   FirstIcon: RiNotification2Line,
+  //   SecondIcon: RiNotification2Fill,
+  // },
   {
     link: "/messages",
     title: "Messages",

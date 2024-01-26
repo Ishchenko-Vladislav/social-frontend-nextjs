@@ -1,6 +1,6 @@
 "use client";
 import { Post } from "@/components/ui/post/Post";
-import { useGetProfilePosts } from "@/hooks/post/usePost";
+// import { useGetProfilePosts } from "@/hooks/post/usePost";
 import { useInfinityLoad } from "@/hooks/useInfinityLoad";
 import { IPostShort } from "@/services/post/post.interface";
 import { PostService } from "@/services/post/post.service";
